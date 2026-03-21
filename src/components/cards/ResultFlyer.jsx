@@ -8,7 +8,7 @@ export default function ResultFlyer({ d }) {
 
   return (
     <div id="preview-result"
-      style={{ width:400, height:580, position:'relative', overflow:'hidden',
+      style={{ width:450, height:500, position:'relative', overflow:'hidden',
         fontFamily:"'Barlow Condensed',sans-serif", maxWidth:'100%',
         background: hasBg ? '#000' : (d.bgColor || '#100808') }}>
 
@@ -17,14 +17,10 @@ export default function ResultFlyer({ d }) {
         <img src={d.bgImage} alt="bg"
           style={{ position:'absolute', inset:0, width:'100%', height:'100%',
             objectFit:'cover', objectPosition:'center 15%',
-            filter:'brightness(0.45) saturate(0.7)' }} />
+            filter:'brightness(0.55) saturate(0.7)' }} />
       )}
 
-      {/* Gradient overlays */}
-      <div style={{ position:'absolute', inset:0, pointerEvents:'none',
-        background:'linear-gradient(180deg,rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.05) 40%,rgba(0,0,0,0.72) 65%,rgba(0,0,0,0.95) 100%)' }} />
-
-      {/* Top accent bar */}
+       
       
 
       {/* T-BLOGS branding */}
@@ -50,10 +46,13 @@ export default function ResultFlyer({ d }) {
         </div>
       )}
 
+ 
+
+  
       {/* Stage label (FULL-TIME / GOAL etc.) */}
-      <div style={{ position:'absolute', top:'55%', left:0, right:0,
+      <div style={{ position:'absolute', top:'45%', left:0, right:0,
         textAlign:'center', transform:'translateY(-50%)' }}>
-        <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:56, lineHeight:1,
+        <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:43, lineHeight:1,
           letterSpacing:'0.06em', color:'rgba(255,255,255,0.92)',
           textShadow:'0 2px 30px rgba(0,0,0,0.8)', fontStyle:'italic' }}>
           {stageLabel}
@@ -67,11 +66,11 @@ export default function ResultFlyer({ d }) {
       </div>
 
       {/* Score block */}
-      <div style={{ position:'absolute', bottom: (homeScorers.length || awayScorers.length) ? 110 : 80,
+      <div style={{ position:'absolute',top:'55%', bottom: (homeScorers.length || awayScorers.length) ? 110 : 80,
         left:0, right:0, display:'flex', flexDirection:'column', alignItems:'center', gap:0 }}>
 
         {/* Logos + score */}
-        <div style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:14, padding:'0 20px' }}>
+        <div style={{ display:'flex',  alignItems:'center', justifyContent:'center', gap:14, padding:'0 20px' }}>
           {getLogo(d.homeTeamLogo, d.homeTeam)
             ? <img src={getLogo(d.homeTeamLogo, d.homeTeam)} alt={d.homeTeam}
                 style={{ width:72, height:72, objectFit:'contain' }} />
@@ -114,7 +113,7 @@ export default function ResultFlyer({ d }) {
 
       {/* Scorers — home left, away right */}
       {(homeScorers.length > 0 || awayScorers.length > 0) && (
-        <div   style={{ position:'absolute',marginTop:2, bottom:60, left:50, right:50,
+        <div   style={{ position:'absolute',top:'78%', bottom:60, left:50, right:50,
           display:'flex', justifyContent:'space-between', padding:'0 20px', gap:8 }}>
           <div style={{ flex:1, display:'flex', flexDirection:'column', gap:4 }}>
             {homeScorers.map((s,i) => (
@@ -130,9 +129,10 @@ export default function ResultFlyer({ d }) {
           </div>
         </div>
       )}
+  
 
       {/* Team names */}
-      <div style={{ position:'absolute', bottom:10, left:0, right:0,
+      {/* <div style={{ position:'absolute', bottom:10, left:0, right:0,
         display:'flex', justifyContent:'space-around', padding:'0 24px' }}>
         <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:13,
           letterSpacing:'0.08em', color:'rgba(255,255,255,0.35)' }}>
@@ -142,7 +142,7 @@ export default function ResultFlyer({ d }) {
           letterSpacing:'0.08em', color:'rgba(255,255,255,0.35)' }}>
           {d.awayTeam?.toUpperCase()}
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }
