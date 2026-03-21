@@ -26,7 +26,8 @@ export default function MatchdayFlyer({ d }) {
         background:'linear-gradient(0deg,rgba(0,0,0,0.85) 0%,transparent 100%)', pointerEvents:'none' }} />
 
       {/* Accent bar */}
-     
+      <div style={{ position:'absolute', top:0, left:0, right:0, height:3,
+        background:'linear-gradient(90deg,#e0000a 0%,rgba(224,0,10,0.3) 60%,transparent 100%)' }} />
 
       {/* Competition logo + name — only shown if competition selected */}
       {(d.competition || d.competitionLogo) && (
@@ -113,7 +114,7 @@ export default function MatchdayFlyer({ d }) {
       </div>
 
       {/* Date / time */}
-      <div style={{ position:'absolute', top:275, left:0, right:0,
+      <div style={{ position:'absolute', top:315, left:0, right:0,
         display:'flex', justifyContent:'center', alignItems:'center', gap:14 }}>
         <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:22,
           letterSpacing:'0.1em', color:'#ffffff', textShadow:'0 1px 8px rgba(0,0,0,0.8)' }}>
@@ -127,9 +128,9 @@ export default function MatchdayFlyer({ d }) {
       </div>
 
       {/* Player images */}
-      <div style={{ position:'absolute', bottom:0, left:0, right:0, height:270, display:'flex' }}>
+      <div style={{ position:'absolute', bottom:0, left:0, right:0, height:230, display:'flex' }}>
         {/* Home player */}
-        <div style={{ flex:1,  position:'relative', overflow:'hidden' }}>
+        <div style={{ flex:1, position:'relative', overflow:'hidden' }}>
           {d.homePlayer
             ? <img src={d.homePlayer} alt="home player"
                 style={{ width:'100%', height:'100%', objectFit:'cover', objectPosition:'top center' }} />

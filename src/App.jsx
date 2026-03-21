@@ -176,20 +176,8 @@ function PreviewThumb({ card, onOpen, containerRef }) {
     <div className="flex flex-col items-center gap-3 w-full">
       <div
         onClick={onOpen}
-        className="group relative cursor-pointer select-none w-full flex justify-center">
-        <div style={{ position:'relative' }}>
-          <ScaledCard card={card} containerRef={containerRef} />
-          {/* Hover overlay — sits on top of the scaled card */}
-          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-            style={{ background:'rgba(0,0,0,0.45)', backdropFilter:'blur(2px)' }}>
-            <div className="flex flex-col items-center gap-2">
-              <div className="w-12 h-12 rounded-full bg-white/10 border-2 border-white/30 flex items-center justify-center">
-                <Eye size={20} className="text-white" />
-              </div>
-              <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-white/80">Tap to preview & download</span>
-            </div>
-          </div>
-        </div>
+        className="cursor-pointer select-none w-full flex justify-center">
+        <ScaledCard card={card} containerRef={containerRef} />
       </div>
       <div className="flex items-center gap-2 text-[10px] text-white/30 tracking-[0.08em]">
         <Eye size={11} />

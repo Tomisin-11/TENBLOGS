@@ -1,6 +1,11 @@
+import { TEAMS, COMPETITIONS } from '../../lib/teamLogos'
+
+const getLogo = (storedLogo, teamName) =>
+  storedLogo || TEAMS[teamName]?.logo || null
+
 /** Result Flyer — 400×580 portrait, FULL-TIME poster style */
 export default function ResultFlyer({ d }) {
-  const hasBg  = !!d.bgImage
+  const hasBg   = !!d.bgImage
   const hasComp = !!(d.competition || d.competitionLogo)
   const stageLabel = d.stageType || 'FULL - TIME'
   const homeScorers = (d.homeScorers || '').split('\n').filter(Boolean)
@@ -20,9 +25,6 @@ export default function ResultFlyer({ d }) {
             filter:'brightness(0.55) saturate(0.7)' }} />
       )}
 
-       
-      
-
       {/* T-BLOGS branding */}
       <div style={{ position:'absolute', top:12, left:14,
         fontFamily:"'Bebas Neue',sans-serif", fontSize:14,
@@ -36,7 +38,7 @@ export default function ResultFlyer({ d }) {
             <img src={d.competitionLogo || COMPETITIONS[d.competition]?.logo} alt={d.competition}
               style={{ height:30, objectFit:'contain' }} />
           )}
-          {d.competition && !d.competitionLogo && (
+          {d.competition && !d.competitionLogo && !COMPETITIONS[d.competition]?.logo && (
             <div style={{ fontSize:9, fontWeight:700, letterSpacing:'0.2em', textTransform:'uppercase',
               color:'rgba(255,255,255,0.4)', background:'rgba(255,255,255,0.06)',
               padding:'3px 8px', border:'1px solid rgba(255,255,255,0.1)' }}>
@@ -46,10 +48,7 @@ export default function ResultFlyer({ d }) {
         </div>
       )}
 
- 
-
-  
-      {/* Stage label (FULL-TIME / GOAL etc.) */}
+      {/* Stage label */}
       <div style={{ position:'absolute', top:'45%', left:0, right:0,
         textAlign:'center', transform:'translateY(-50%)' }}>
         <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:43, lineHeight:1,
@@ -66,11 +65,9 @@ export default function ResultFlyer({ d }) {
       </div>
 
       {/* Score block */}
-      <div style={{ position:'absolute',top:'55%', bottom: (homeScorers.length || awayScorers.length) ? 110 : 80,
-        left:0, right:0, display:'flex', flexDirection:'column', alignItems:'center', gap:0 }}>
-
-        {/* Logos + score */}
-        <div style={{ display:'flex',  alignItems:'center', justifyContent:'center', gap:14, padding:'0 20px' }}>
+      <div style={{ position:'absolute', top:'55%', left:0, right:0,
+        display:'flex', flexDirection:'column', alignItems:'center' }}>
+        <div style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:14, padding:'0 20px' }}>
           {getLogo(d.homeTeamLogo, d.homeTeam)
             ? <img src={getLogo(d.homeTeamLogo, d.homeTeam)} alt={d.homeTeam}
                 style={{ width:72, height:72, objectFit:'contain' }} />
@@ -81,9 +78,9 @@ export default function ResultFlyer({ d }) {
                 </span>
               </div>
           }
-          <div className='ml-5' style={{  fontFamily:"'Bebas Neue',sans-serif", fontSize:76, lineHeight:1,
+          <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:76, lineHeight:1,
             letterSpacing:'0.04em', color:'#ffffff',
-            textShadow:'0 2px 20px rgba(0,0,0,0.9)' }}>
+            textShadow:'0 2px 20px rgba(0,0,0,0.9)', margin:'0 8px' }}>
             {d.homeScore} - {d.awayScore}
           </div>
           {getLogo(d.awayTeamLogo, d.awayTeam)
@@ -98,7 +95,6 @@ export default function ResultFlyer({ d }) {
           }
         </div>
 
-        {/* Competition + stage name */}
         {(d.competition || d.stageName) && (
           <div style={{ marginTop:12, display:'flex', alignItems:'center', gap:10 }}>
             <div style={{ flex:1, height:1, background:'rgba(255,255,255,0.2)', minWidth:30 }} />
@@ -111,9 +107,9 @@ export default function ResultFlyer({ d }) {
         )}
       </div>
 
-      {/* Scorers — home left, away right */}
+      {/* Scorers */}
       {(homeScorers.length > 0 || awayScorers.length > 0) && (
-        <div   style={{ position:'absolute',top:'78%', bottom:60, left:50, right:50,
+        <div style={{ position:'absolute', top:'78%', left:50, right:50,
           display:'flex', justifyContent:'space-between', padding:'0 20px', gap:8 }}>
           <div style={{ flex:1, display:'flex', flexDirection:'column', gap:4 }}>
             {homeScorers.map((s,i) => (
@@ -129,29 +125,6 @@ export default function ResultFlyer({ d }) {
           </div>
         </div>
       )}
-  
-
-      {/* Team names */}
-      {/* <div style={{ position:'absolute', bottom:10, left:0, right:0,
-        display:'flex', justifyContent:'space-around', padding:'0 24px' }}>
-        <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:13,
-          letterSpacing:'0.08em', color:'rgba(255,255,255,0.35)' }}>
-          {d.homeTeam?.toUpperCase()}
-        </div>
-        <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:13,
-          letterSpacing:'0.08em', color:'rgba(255,255,255,0.35)' }}>
-          {d.awayTeam?.toUpperCase()}
-        </div>
-      </div> */}
     </div>
   )
 }
-import { TEAMS, COMPETITIONS } from '../../lib/teamLogos'
-
-// Resolve logo: use stored state value, or fall back to live TEAMS lookup
-const getLogo = (storedLogo, teamName) =>
-  storedLogo || TEAMS[teamName]?.logo || null
-const getCompLogo = (stored, name) =>
-  stored || COMPETITIONS[name]?.logo || null
-
-

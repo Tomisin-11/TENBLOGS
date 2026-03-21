@@ -34,5 +34,5 @@ export async function downloadCardAsPng(elementId, filename = 'tenblogs-card', s
   } catch (err) {
     console.error('[download] failed:', err)
     alert('Download failed — please try again.')
-p  }
+  }
 }
