@@ -29,3 +29,12 @@
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 }
+
+/* Form panel: full height on desktop, 45vh on mobile */
+@media (min-width: 1024px) {
+  .form-panel {
+    height: 100% !important;
+    max-height: 100% !important;
+    flex: 1 !important;
+  }
+}

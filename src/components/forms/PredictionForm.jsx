@@ -4,8 +4,8 @@ import { COMPETITION_NAMES } from '../../lib/teamLogos'
 
 export default function PredictionForm({ d, setD }) {
   const s = k => v => setD(p => ({ ...p, [k]: v }))
-  const handleHome = ({ name, logoPath }) => setD(p => ({ ...p, homeTeam: name, homeTeamLogo: logoPath }))
-  const handleAway = ({ name, logoPath }) => setD(p => ({ ...p, awayTeam: name, awayTeamLogo: logoPath }))
+  const handleHome = ({ name, logo }) => setD(p => ({ ...p, homeTeam: name, homeTeamLogo: logo }))
+  const handleAway = ({ name, logo }) => setD(p => ({ ...p, awayTeam: name, awayTeamLogo: logo }))
   return (
     <div className="flex flex-col gap-6">
       <div><SectionLabel>Home Team</SectionLabel>

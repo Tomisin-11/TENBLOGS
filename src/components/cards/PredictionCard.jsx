@@ -1,4 +1,11 @@
 import { CardBrand } from '../ui/SharedUI'
+import { TEAMS } from '../../lib/teamLogos'
+
+// Resolve logo: use stored state value, or fall back to live TEAMS lookup
+const getLogo = (storedLogo, teamName) =>
+  storedLogo || TEAMS[teamName]?.logo || null
+
+
 
 export default function PredictionCard({ d }) {
   const p1   = parseFloat(d.homeWinPct)||0
@@ -22,13 +29,13 @@ export default function PredictionCard({ d }) {
         <div className="text-[9px] font-bold tracking-[0.2em] uppercase text-white/25 mb-2.5">{d.comp}</div>
         <div className="flex items-center gap-3 mb-2 flex-wrap">
           <div className="flex items-center gap-2">
-            {d.homeTeamLogo && <img src={d.homeTeamLogo} alt={d.homeTeam} style={{ width:28, height:28, objectFit:'contain' }} />}
+            {getLogo(d.homeTeamLogo, d.homeTeam) && <img src={getLogo(d.homeTeamLogo, d.homeTeam)} alt={d.homeTeam} style={{ width:28, height:28, objectFit:'contain' }} />}
             <span className="font-bebas text-[22px] tracking-[0.03em] text-white">{d.homeTeam?.toUpperCase()}</span>
           </div>
           <span className="text-[11px] text-white/18 font-bold">VS</span>
           <div className="flex items-center gap-2">
             <span className="font-bebas text-[22px] tracking-[0.03em] text-white">{d.awayTeam?.toUpperCase()}</span>
-            {d.awayTeamLogo && <img src={d.awayTeamLogo} alt={d.awayTeam} style={{ width:28, height:28, objectFit:'contain' }} />}
+            {getLogo(d.awayTeamLogo, d.awayTeam) && <img src={getLogo(d.awayTeamLogo, d.awayTeam)} alt={d.awayTeam} style={{ width:28, height:28, objectFit:'contain' }} />}
           </div>
         </div>
         <div className="text-[10px] text-white/28 tracking-[0.05em]">{d.date}</div>

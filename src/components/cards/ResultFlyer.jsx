@@ -1,46 +1,44 @@
-/** Result Flyer — competition logo is optional, no hardcoded text */
+/** Result Flyer — 400×580 portrait, FULL-TIME poster style */
 export default function ResultFlyer({ d }) {
-  const hasBg   = !!d.bgImage
+  const hasBg  = !!d.bgImage
   const hasComp = !!(d.competition || d.competitionLogo)
+  const stageLabel = d.stageType || 'FULL - TIME'
+  const homeScorers = (d.homeScorers || '').split('\n').filter(Boolean)
+  const awayScorers = (d.awayScorers || '').split('\n').filter(Boolean)
 
   return (
     <div id="preview-result"
       style={{ width:400, height:580, position:'relative', overflow:'hidden',
-        fontFamily:"'Barlow Condensed',sans-serif",
-        background: hasBg ? '#000' : '#100808',
-        maxWidth:'100%' }}>
+        fontFamily:"'Barlow Condensed',sans-serif", maxWidth:'100%',
+        background: hasBg ? '#000' : (d.bgColor || '#100808') }}>
 
       {/* Background photo */}
       {hasBg && (
-        <img src={d.bgImage} alt="background"
+        <img src={d.bgImage} alt="bg"
           style={{ position:'absolute', inset:0, width:'100%', height:'100%',
-            objectFit:'cover', objectPosition:'center 20%',
-            filter:'brightness(0.5) saturate(0.75)' }} />
+            objectFit:'cover', objectPosition:'center 15%',
+            filter:'brightness(0.45) saturate(0.7)' }} />
       )}
 
       {/* Gradient overlays */}
-      <div style={{ position:'absolute', inset:0,
-        background:'linear-gradient(180deg,rgba(0,0,0,0.35) 0%,rgba(0,0,0,0.05) 40%,rgba(0,0,0,0.72) 70%,rgba(0,0,0,0.94) 100%)',
-        pointerEvents:'none' }} />
+      <div style={{ position:'absolute', inset:0, pointerEvents:'none',
+        background:'linear-gradient(180deg,rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.05) 40%,rgba(0,0,0,0.72) 65%,rgba(0,0,0,0.95) 100%)' }} />
 
       {/* Top accent bar */}
-      <div style={{ position:'absolute', top:0, left:0, right:0, height:4,
-        background:'linear-gradient(90deg,#e0000a,rgba(224,0,10,0.3) 60%,transparent 100%)' }} />
+      
 
-      {/* Top branding */}
+      {/* T-BLOGS branding */}
       <div style={{ position:'absolute', top:12, left:14,
-        fontFamily:"'Bebas Neue',sans-serif", fontSize:16, letterSpacing:'0.22em',
-        color:'rgba(255,255,255,0.45)' }}>
-        T-BLOGS
-      </div>
+        fontFamily:"'Bebas Neue',sans-serif", fontSize:14,
+        letterSpacing:'0.22em', color:'rgba(255,255,255,0.4)' }}>TEN BLOGS</div>
 
-      {/* ── Competition logo (optional) — top right ── */}
+      {/* Competition logo top-right (optional) */}
       {hasComp && (
-        <div style={{ position:'absolute', top:10, right:14,
+        <div style={{ position:'absolute', top:8, right:14,
           display:'flex', flexDirection:'column', alignItems:'flex-end', gap:4 }}>
-          {d.competitionLogo && (
-            <img src={d.competitionLogo} alt={d.competition}
-              style={{ height:32, objectFit:'contain' }} />
+          {(d.competitionLogo || COMPETITIONS[d.competition]?.logo) && (
+            <img src={d.competitionLogo || COMPETITIONS[d.competition]?.logo} alt={d.competition}
+              style={{ height:30, objectFit:'contain' }} />
           )}
           {d.competition && !d.competitionLogo && (
             <div style={{ fontSize:9, fontWeight:700, letterSpacing:'0.2em', textTransform:'uppercase',
@@ -52,91 +50,108 @@ export default function ResultFlyer({ d }) {
         </div>
       )}
 
-      {/* FULL-TIME text */}
-      <div style={{ position:'absolute', top:hasBg ? '36%' : '32%', left:0, right:0,
+      {/* Stage label (FULL-TIME / GOAL etc.) */}
+      <div style={{ position:'absolute', top:'55%', left:0, right:0,
         textAlign:'center', transform:'translateY(-50%)' }}>
-        <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:58, lineHeight:1,
+        <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:56, lineHeight:1,
           letterSpacing:'0.06em', color:'rgba(255,255,255,0.92)',
           textShadow:'0 2px 30px rgba(0,0,0,0.8)', fontStyle:'italic' }}>
-          FULL - TIME
+          {stageLabel}
         </div>
+        {d.stageSubtext && (
+          <div style={{ fontSize:11, fontWeight:700, letterSpacing:'0.2em',
+            textTransform:'uppercase', color:'rgba(255,255,255,0.4)', marginTop:6 }}>
+            {d.stageSubtext}
+          </div>
+        )}
       </div>
 
       {/* Score block */}
-      <div style={{ position:'absolute', bottom:130, left:0, right:0,
-        display:'flex', flexDirection:'column', alignItems:'center', gap:0 }}>
+      <div style={{ position:'absolute', bottom: (homeScorers.length || awayScorers.length) ? 110 : 80,
+        left:0, right:0, display:'flex', flexDirection:'column', alignItems:'center', gap:0 }}>
 
         {/* Logos + score */}
         <div style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:14, padding:'0 20px' }}>
-          {/* Home logo */}
-          {d.homeTeamLogo
-            ? <img src={d.homeTeamLogo} alt={d.homeTeam}
-                style={{ width:76, height:76, objectFit:'contain' }} />
-            : <div style={{ width:76, height:76, background:'rgba(255,255,255,0.1)',
+          {getLogo(d.homeTeamLogo, d.homeTeam)
+            ? <img src={getLogo(d.homeTeamLogo, d.homeTeam)} alt={d.homeTeam}
+                style={{ width:72, height:72, objectFit:'contain' }} />
+            : <div style={{ width:72, height:72, background:'rgba(255,255,255,0.1)',
                 display:'flex', alignItems:'center', justifyContent:'center' }}>
-                <span style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:19,
-                  color:'rgba(255,255,255,0.5)' }}>
+                <span style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:18, color:'rgba(255,255,255,0.5)' }}>
                   {d.homeTeam?.slice(0,3).toUpperCase()}
                 </span>
               </div>
           }
-
-          {/* Score */}
-          <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:76, lineHeight:1,
+          <div className='ml-5' style={{  fontFamily:"'Bebas Neue',sans-serif", fontSize:76, lineHeight:1,
             letterSpacing:'0.04em', color:'#ffffff',
             textShadow:'0 2px 20px rgba(0,0,0,0.9)' }}>
             {d.homeScore} - {d.awayScore}
           </div>
-
-          {/* Away logo */}
-          {d.awayTeamLogo
-            ? <img src={d.awayTeamLogo} alt={d.awayTeam}
-                style={{ width:76, height:76, objectFit:'contain' }} />
-            : <div style={{ width:76, height:76, background:'rgba(255,255,255,0.1)',
+          {getLogo(d.awayTeamLogo, d.awayTeam)
+            ? <img src={getLogo(d.awayTeamLogo, d.awayTeam)} alt={d.awayTeam}
+                style={{ width:72, height:72, objectFit:'contain' }} />
+            : <div style={{ width:72, height:72, background:'rgba(255,255,255,0.1)',
                 display:'flex', alignItems:'center', justifyContent:'center' }}>
-                <span style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:19,
-                  color:'rgba(255,255,255,0.5)' }}>
+                <span style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:18, color:'rgba(255,255,255,0.5)' }}>
                   {d.awayTeam?.slice(0,3).toUpperCase()}
                 </span>
               </div>
           }
         </div>
 
-        {/* Stage label — only if competition or stage is set */}
-        {(d.competition || d.stage) && (
-          <div style={{ marginTop:14, display:'flex', alignItems:'center', gap:10 }}>
-            <div style={{ flex:1, height:1, background:'rgba(255,255,255,0.2)', minWidth:40 }} />
-            <div style={{ fontSize:13, fontWeight:700, letterSpacing:'0.25em', textTransform:'uppercase',
-              color:'rgba(255,255,255,0.6)' }}>
-              {[d.competition, d.stage].filter(Boolean).join(' · ')}
+        {/* Competition + stage name */}
+        {(d.competition || d.stageName) && (
+          <div style={{ marginTop:12, display:'flex', alignItems:'center', gap:10 }}>
+            <div style={{ flex:1, height:1, background:'rgba(255,255,255,0.2)', minWidth:30 }} />
+            <div style={{ fontSize:11, fontWeight:700, letterSpacing:'0.25em', textTransform:'uppercase',
+              color:'rgba(255,255,255,0.55)' }}>
+              {[d.competition, d.stageName].filter(Boolean).join(' · ')}
             </div>
-            <div style={{ flex:1, height:1, background:'rgba(255,255,255,0.2)', minWidth:40 }} />
+            <div style={{ flex:1, height:1, background:'rgba(255,255,255,0.2)', minWidth:30 }} />
           </div>
         )}
       </div>
 
+      {/* Scorers — home left, away right */}
+      {(homeScorers.length > 0 || awayScorers.length > 0) && (
+        <div   style={{ position:'absolute',marginTop:2, bottom:60, left:50, right:50,
+          display:'flex', justifyContent:'space-between', padding:'0 20px', gap:8 }}>
+          <div style={{ flex:1, display:'flex', flexDirection:'column', gap:4 }}>
+            {homeScorers.map((s,i) => (
+              <div key={i} style={{ fontSize:12, color:'rgba(255,255,255,0.65)',
+                letterSpacing:'0.04em', textAlign:'left' }}>{s}</div>
+            ))}
+          </div>
+          <div style={{ flex:1, display:'flex', flexDirection:'column', gap:4 }}>
+            {awayScorers.map((s,i) => (
+              <div key={i} style={{ fontSize:12, color:'rgba(255,255,255,0.65)',
+                letterSpacing:'0.04em', textAlign:'right' }}>{s}</div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Team names */}
-      <div style={{ position:'absolute', bottom:60, left:0, right:0,
+      <div style={{ position:'absolute', bottom:10, left:0, right:0,
         display:'flex', justifyContent:'space-around', padding:'0 24px' }}>
-        <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:15, letterSpacing:'0.08em',
-          color:'rgba(255,255,255,0.5)' }}>
+        <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:13,
+          letterSpacing:'0.08em', color:'rgba(255,255,255,0.35)' }}>
           {d.homeTeam?.toUpperCase()}
         </div>
-        <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:15, letterSpacing:'0.08em',
-          color:'rgba(255,255,255,0.5)' }}>
+        <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:13,
+          letterSpacing:'0.08em', color:'rgba(255,255,255,0.35)' }}>
           {d.awayTeam?.toUpperCase()}
-        </div>
-      </div>
-
-      {/* Bottom bar */}
-      <div style={{ position:'absolute', bottom:0, left:0, right:0, height:38,
-        display:'flex', alignItems:'center', justifyContent:'center',
-        background:'rgba(0,0,0,0.55)', borderTop:'1px solid rgba(255,255,255,0.06)' }}>
-        <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:13, letterSpacing:'0.22em',
-          color:'rgba(255,255,255,0.3)' }}>
-          T-BLOGS · tenblogs.com
         </div>
       </div>
     </div>
   )
 }
+import { TEAMS, COMPETITIONS } from '../../lib/teamLogos'
+
+// Resolve logo: use stored state value, or fall back to live TEAMS lookup
+const getLogo = (storedLogo, teamName) =>
+  storedLogo || TEAMS[teamName]?.logo || null
+const getCompLogo = (stored, name) =>
+  stored || COMPETITIONS[name]?.logo || null
+
+

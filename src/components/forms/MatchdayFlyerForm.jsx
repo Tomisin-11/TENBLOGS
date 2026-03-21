@@ -26,9 +26,9 @@ function PlayerUpload({ label, value, onChange }) {
 
 export default function MatchdayFlyerForm({ d, setD }) {
   const s = k => v => setD(p => ({ ...p, [k]: v }))
-  const handleComp = ({ name, logoPath, bg }) => setD(p => ({ ...p, competition:name, competitionLogo:logoPath, bgColor:bg||p.bgColor }))
-  const handleHome = ({ name, logoPath }) => setD(p => ({ ...p, homeTeam:name, homeTeamLogo:logoPath }))
-  const handleAway = ({ name, logoPath }) => setD(p => ({ ...p, awayTeam:name, awayTeamLogo:logoPath }))
+  const handleComp = ({ name, logo, bg }) => setD(p => ({ ...p, competition:name, competitionLogo:logo, bgColor:bg||p.bgColor }))
+  const handleHome = ({ name, logo }) => setD(p => ({ ...p, homeTeam:name, homeTeamLogo:logo }))
+  const handleAway = ({ name, logo }) => setD(p => ({ ...p, awayTeam:name, awayTeamLogo:logo }))
   return (
     <div className="flex flex-col gap-6">
       <div><SectionLabel>Competition (optional)</SectionLabel>

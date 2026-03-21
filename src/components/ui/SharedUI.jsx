@@ -88,17 +88,17 @@ export function DownloadButton({ targetId, filename, size = 'md', className = ''
     try {
       await downloadCardAsPng(targetId, filename || targetId)
       setSt('done')
-      setTimeout(() => setSt('idle'), 2500)
+      setTimeout(() => setSt('idle'), 3000)
     } catch {
       setSt('error')
-      setTimeout(() => setSt('idle'), 2500)
+      setTimeout(() => setSt('idle'), 3000)
     }
   }
   const cfg = {
-    idle:    { Icon: Download,    text: 'Download PNG',   cls: 'bg-[#e0000a] hover:bg-[#ff2535] border-transparent text-white' },
-    loading: { Icon: Loader2,     text: 'Generating…',    cls: 'bg-[#e0000a]/20 border-[#e0000a]/40 text-[#e0000a] cursor-wait' },
-    done:    { Icon: CheckCircle, text: 'Downloaded!',    cls: 'bg-green-600/20 border-green-500/40 text-green-400' },
-    error:   { Icon: Download,    text: 'Retry',          cls: 'bg-white/[0.04] border-[#e0000a]/40 text-[#e0000a]' },
+    idle:    { Icon: Download,    text: 'Download PNG',      cls: 'bg-[#e0000a] hover:bg-[#ff2535] border-transparent text-white' },
+    loading: { Icon: Loader2,     text: 'Rendering card…',   cls: 'bg-[#e0000a]/20 border-[#e0000a]/40 text-[#e0000a] cursor-wait' },
+    done:    { Icon: CheckCircle, text: 'Saved to device!',  cls: 'bg-green-600/20 border-green-500/40 text-green-400' },
+    error:   { Icon: Download,    text: 'Failed — retry',    cls: 'bg-white/[0.04] border-[#e0000a]/40 text-[#e0000a]' },
   }
   const { Icon, text, cls } = cfg[st]
   const pad = size === 'lg' ? 'px-8 py-3.5 text-[13px]' : 'px-5 py-2.5 text-[11px]'

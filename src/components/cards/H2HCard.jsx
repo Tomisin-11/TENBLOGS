@@ -1,6 +1,31 @@
 import { CardBrand } from '../ui/SharedUI'
+import { TEAMS } from '../../lib/teamLogos'
+import { resolveTeamColors } from '../../lib/colorUtils'
 
-// Uses homeColor / awayColor applied per user's edits
+// Resolve logo: use stored state value, or fall back to live TEAMS lookup
+const getLogo = (storedLogo, teamName) =>
+  storedLogo || TEAMS[teamName]?.logo || null
+
+
+
+// Same shortening logic as analytics
+const shortName = (custom, full) => {
+  if (custom && custom.trim()) return custom.trim()
+  if (!full) return ''
+  if (full.length <= 14) return full
+  const map = {
+    'Manchester City':'Man City','Manchester United':'Man Utd',
+    'Tottenham Hotspur':'Spurs','Borussia Dortmund':'Dortmund',
+    'Nottingham Forest':'Nott\'m Forest','West Bromwich Albion':'West Brom',
+    'Red Bull Salzburg':'RB Salzburg','Sheffield United':'Sheff Utd',
+    'Sheffield Wednesday':'Sheff Wed','West Ham United':'West Ham',
+    'Newcastle United':'Newcastle','Borussia M\'gladbach':'M\'gladbach',
+    'Eintracht Frankfurt':'Frankfurt','Bayer Leverkusen':'Leverkusen',
+    'Paris Saint-Germain':'PSG','RC Strasbourg Alsace':'Strasbourg',
+  }
+  return map[full] || full.slice(0, 13) + '.'
+}
+
 const DualBar = ({ hv, av, homeColor, awayColor }) => {
   const t = (parseFloat(hv)||0)+(parseFloat(av)||0)||1
   return (
@@ -11,23 +36,18 @@ const DualBar = ({ hv, av, homeColor, awayColor }) => {
   )
 }
 
-// W=green, D=gray, L=red per user's edit
 const FormDot = ({ r }) => {
   const s = { W:'bg-green-600 text-white', D:'bg-white/[0.1] text-white/50 border border-white/[0.15]', L:'bg-red-600 text-white' }
   return <div className={`w-[22px] h-[22px] flex items-center justify-center text-[9px] font-bold ${s[r]||s.D}`}>{r}</div>
 }
 
-// Logo uses data URL from state — no external fetch at render time
-const TeamLogo = ({ logo, name, size = 48 }) => {
-  if (logo) {
-    return (
-      <img src={logo} alt={name}
-        style={{ width:size, height:size, objectFit:'contain' }} />
-    )
-  }
+const TeamLogo = ({ logo, name, size = 44 }) => {
+  if (logo) return <img src={logo} alt={name} style={{ width:size, height:size, objectFit:'contain' }} />
   return (
-    <div style={{ width:size, height:size, background:'rgba(255,255,255,0.06)', display:'flex', alignItems:'center', justifyContent:'center' }}>
-      <span style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:size/4, color:'rgba(255,255,255,0.4)', letterSpacing:'0.1em' }}>
+    <div style={{ width:size, height:size, background:'rgba(255,255,255,0.06)',
+      display:'flex', alignItems:'center', justifyContent:'center' }}>
+      <span style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:size/4,
+        color:'rgba(255,255,255,0.4)', letterSpacing:'0.1em' }}>
         {name?.slice(0,3).toUpperCase()}
       </span>
     </div>
@@ -35,8 +55,15 @@ const TeamLogo = ({ logo, name, size = 48 }) => {
 }
 
 export default function H2HCard({ d }) {
-  const homeColor = d.homeTeamColor || '#7BCBEB'
-  const awayColor = d.awayTeamColor || '#e0000a'
+  const homeTeam = TEAMS[d.homeTeam]
+  const awayTeam = TEAMS[d.awayTeam]
+  const { home: homeColor, away: awayColor } = resolveTeamColors(
+    d.homeTeamColor || '#7BCBEB',
+    d.awayTeamColor || '#e0000a',
+    homeTeam?.away, awayTeam?.home
+  )
+  const homeName  = shortName(d.homeDisplayName, d.homeTeam)
+  const awayName  = shortName(d.awayDisplayName, d.awayTeam)
 
   const recent = [
     { date:d.r1date, result:d.r1result },
@@ -60,28 +87,48 @@ export default function H2HCard({ d }) {
         <CardBrand />
       </div>
 
-      {/* Teams row */}
-      <div className="flex items-center justify-between px-4 py-4 border-b border-white/[0.06]">
-        <div>
-          <div className="flex items-center gap-2.5">
-            <TeamLogo logo={d.homeTeamLogo} name={d.homeTeam} size={48} />
-            <div className="font-bebas text-[24px] leading-none text-white">{d.homeTeam.toUpperCase()}</div>
+      {/* Teams — fixed grid so both sides stay symmetric */}
+      <div style={{ display:'grid', gridTemplateColumns:'1fr auto 1fr',
+        alignItems:'center', padding:'12px 16px 12px', borderBottom:'1px solid rgba(255,255,255,0.06)' }}>
+
+        {/* Home — logo + name on same row */}
+        <div style={{ display:'flex', flexDirection:'column', alignItems:'flex-start', gap:4 }}>
+          <div style={{ display:'flex', alignItems:'center', gap:8 }}>
+            <TeamLogo logo={getLogo(d.homeTeamLogo, d.homeTeam)} name={d.homeTeam} size={40} />
+            <div className="font-bebas text-[22px] leading-none text-white">{homeName.toUpperCase()}</div>
           </div>
-          <div className="text-[9px] font-bold tracking-[0.15em] uppercase mt-1.5 ml-0.5" style={{ color:homeColor }}>Home</div>
+          <div className="text-[9px] font-bold tracking-[0.12em] uppercase" style={{ color:homeColor }}>Home</div>
         </div>
 
-        <div className="flex flex-col items-center gap-1.5">
+        {/* Center H2H badge */}
+        <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:6, padding:'0 12px' }}>
           <div className="border px-4 py-1 text-[11px] font-bold tracking-[0.15em]"
             style={{ borderColor:`${homeColor}40`, background:`${homeColor}15`, color:homeColor }}>H2H</div>
-          <div className="text-[9px] font-bold tracking-[0.08em] uppercase text-white/22 text-center">{d.date}</div>
+          <div className="text-[9px] font-bold tracking-[0.08em] uppercase text-white/22 text-center whitespace-nowrap">{d.date}</div>
         </div>
 
-        <div className="text-right">
-          <div className="flex items-center gap-2.5 justify-end">
-            <div className="font-bebas text-[24px] leading-none text-white">{d.awayTeam.toUpperCase()}</div>
-            <TeamLogo logo={d.awayTeamLogo} name={d.awayTeam} size={48} />
+        {/* Away — logo + name on same row */}
+        <div style={{ display:'flex', flexDirection:'column', alignItems:'flex-end', gap:4 }}>
+          <div style={{ display:'flex', alignItems:'center', gap:8 }}>
+            <div className="font-bebas text-[22px] leading-none text-white">{awayName.toUpperCase()}</div>
+            <TeamLogo logo={getLogo(d.awayTeamLogo, d.awayTeam)} name={d.awayTeam} size={40} />
           </div>
-          <div className="text-[9px] font-bold tracking-[0.15em] uppercase mt-1.5 text-right mr-0.5" style={{ color:awayColor }}>Away</div>
+          <div className="text-[9px] font-bold tracking-[0.12em] uppercase text-right" style={{ color:awayColor }}>Away</div>
+        </div>
+      </div>
+
+      {/* Color key — always visible so teams are identifiable even with similar colors */}
+      <div style={{ display:'flex', justifyContent:'space-between', padding:'4px 16px',
+        background:'rgba(0,0,0,0.2)', borderBottom:'1px solid rgba(255,255,255,0.04)' }}>
+        <div style={{ display:'flex', alignItems:'center', gap:5 }}>
+          <div style={{ width:10, height:10, borderRadius:'50%', background:homeColor, flexShrink:0 }} />
+          <span style={{ fontSize:9, fontWeight:700, letterSpacing:'0.12em', textTransform:'uppercase',
+            color:'rgba(255,255,255,0.4)' }}>{homeName}</span>
+        </div>
+        <div style={{ display:'flex', alignItems:'center', gap:5 }}>
+          <span style={{ fontSize:9, fontWeight:700, letterSpacing:'0.12em', textTransform:'uppercase',
+            color:'rgba(255,255,255,0.4)' }}>{awayName}</span>
+          <div style={{ width:10, height:10, borderRadius:'50%', background:awayColor, flexShrink:0 }} />
         </div>
       </div>
 
@@ -102,33 +149,37 @@ export default function H2HCard({ d }) {
       {/* Stat bars */}
       <div className="px-4 py-4">
         {[
-          { lbl:'Total Goals',    hv:d.homeGoals, av:d.awayGoals },
-          { lbl:'Avg Possession', hv:d.homePoss,  av:100-parseFloat(d.homePoss||50) },
-          { lbl:'Shots / Game',   hv:d.homeShots, av:d.awayShots },
-        ].map(({ lbl, hv, av }) => (
+          { lbl:'Total Goals',      hv:d.homeGoals, av:d.awayGoals, dispHv:d.homeGoals, dispAv:d.awayGoals },
+          { lbl:'Avg Possession',   hv:d.homePoss,  av:100-parseFloat(d.homePoss||50), dispHv:d.homePoss+'%', dispAv:(100-parseFloat(d.homePoss||50))+'%' },
+          { lbl:'Attacking Threat', hv:d.homeAttackingThreat||0, av:d.awayAttackingThreat||0, dispHv:(d.homeAttackingThreat||0)+'%', dispAv:(d.awayAttackingThreat||0)+'%' },
+        ].map(({ lbl, hv, av, dispHv, dispAv }) => (
           <div key={lbl} className="mb-4 last:mb-0">
             <div className="flex justify-between items-center mb-2">
-              <span className="font-bebas text-[18px] text-white">{hv}</span>
+              <span className="font-bebas text-[18px] text-white">{dispHv}</span>
               <span className="text-[10px] font-bold tracking-[0.18em] uppercase text-white/28">{lbl}</span>
-              <span className="font-bebas text-[18px] text-white/38">{av}</span>
+              <span className="font-bebas text-[18px] text-white/38">{dispAv}</span>
             </div>
-            <DualBar hv={hv} av={av} homeColor={homeColor} awayColor={awayColor} />
+            <DualBar hv={parseFloat(hv)||0} av={parseFloat(av)||0} homeColor={homeColor} awayColor={awayColor} />
           </div>
         ))}
       </div>
 
       {/* Form */}
       <div className="px-4 py-3 border-t border-white/[0.06]">
-        <div className="text-[11px] text-center font-bold tracking-[0.2em] uppercase text-white/50 mb-3">Recent Form (Last 5)</div>
+        <div className="text-[11px] text-center font-bold tracking-[0.2em] uppercase text-white/50 mb-3">
+          Recent Form (Last 5)
+        </div>
         <div className="flex justify-between items-center">
           <div className="flex gap-1">{hF.map((r,i) => <FormDot key={i} r={r} />)}</div>
           <div className="flex gap-1 flex-row-reverse">{aF.map((r,i) => <FormDot key={i} r={r} />)}</div>
         </div>
       </div>
 
-      {/* Recent meetings */}
+      {/* Previous meetings */}
       <div className="px-4 pb-4 border-t border-white/[0.06]">
-        <div className="text-[13px] text-center font-bold tracking-[0.2em] uppercase text-white/50 mt-3 mb-3">Last 3 Meetings</div>
+        <div className="text-[13px] text-center font-bold tracking-[0.2em] uppercase text-white/50 mt-3 mb-3">
+          Last 3 Meetings
+        </div>
         {recent.map((r,i) => (
           <div key={i} className={`flex justify-between items-center py-2 ${i<recent.length-1?'border-b border-white/[0.04]':''}`}>
             <span className="text-[12px] text-white/30 min-w-[68px]">{r.date}</span>
