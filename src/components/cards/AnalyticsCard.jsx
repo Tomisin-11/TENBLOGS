@@ -2,23 +2,18 @@ import { CardBrand } from '../ui/SharedUI'
 import { TEAMS } from '../../lib/teamLogos'
 import { resolveTeamColors } from '../../lib/colorUtils'
 
-// Resolve logo: use stored state value, or fall back to live TEAMS lookup
 const getLogo = (storedLogo, teamName) =>
   storedLogo || TEAMS[teamName]?.logo || null
 
-
-
-// Helper: auto-shorten very long team names
 const shortName = (custom, full) => {
   if (custom && custom.trim()) return custom.trim()
   if (!full) return ''
   if (full.length <= 14) return full
-  // Common abbreviations
   const map = {
     'Manchester City':'Man City','Manchester United':'Man Utd',
     'Tottenham Hotspur':'Spurs','Tottenham':'Spurs',
-    'Borussia Dortmund':'Dortmund','Borussia M\'gladbach':'M\'gladbach',
-    'Nottingham Forest':'Nott\'m Forest','Crystal Palace':'Crystal Pal.',
+    'Borussia Dortmund':'Dortmund',"Borussia M'gladbach":"M'gladbach",
+    'Nottingham Forest':"Nott'm Forest",'Crystal Palace':'Crystal Pal.',
     'West Bromwich Albion':'West Brom','Queens Park Rangers':'QPR',
     'Red Bull Salzburg':'RB Salzburg','RB Leipzig':'RB Leipzig',
     'Eintracht Frankfurt':'Frankfurt','Sheffield United':'Sheff Utd',
@@ -33,30 +28,54 @@ const shortName = (custom, full) => {
   return map[full] || full.slice(0, 13) + '.'
 }
 
+/* Single tug-of-war bar — home fills from left, away fills from right.
+   Both are % of total so they always sum to 100% of the bar.
+   Home=60, Away=40 → home occupies left 60%, away occupies right 40%. */
 const AnBar = ({ hv, av, homeColor, awayColor, gold }) => {
-  const max = Math.max(parseFloat(hv)||0, parseFloat(av)||0)||1
+  const h = parseFloat(hv) || 0
+  const a = parseFloat(av) || 0
+  const total = h + a || 1
+  const hPct = (h / total) * 100
+  const aPct = (a / total) * 100
+  const hColor = gold ? 'rgba(245,200,66,0.75)' : homeColor
+  const aColor = gold ? 'rgba(245,200,66,0.35)' : awayColor
   return (
-    <div className="h-2 relative flex" style={{ background:'rgba(255,255,255,0.05)' }}>
-      <div style={{ width:`${(parseFloat(hv)||0)/max*100}%`, height:'100%',
-        background:gold?'rgba(245,200,66,0.55)':homeColor, transition:'width 0.7s' }} />
-      <div className="absolute right-0 top-0 bottom-0"
-        style={{ width:`${(parseFloat(av)||0)/max*100}%`,
-          background:gold?'rgba(245,200,66,0.2)':awayColor, transition:'width 0.7s' }} />
+    <div style={{ height:6, display:'flex', overflow:'hidden', borderRadius:1,
+      background:'rgba(255,255,255,0.05)' }}>
+      <div style={{ width:`${hPct}%`, background:hColor, transition:'width 0.7s', height:'100%' }} />
+      <div style={{ width:`${aPct}%`, background:aColor, transition:'width 0.7s', height:'100%', marginLeft:'auto' }} />
     </div>
   )
 }
 
+/* Possession: always home+away = 100%.
+   Text color adapts so it's readable against any kit color. */
 const PossBar = ({ hp, homeColor, awayColor }) => {
-  const h = parseFloat(hp)||50, a = 100-h
+  const h = parseFloat(hp) || 50
+  const a = 100 - h
+
+  const isLight = (hex) => {
+    try {
+      const c = hex.replace('#','')
+      const r = parseInt(c.slice(0,2),16)
+      const g = parseInt(c.slice(2,4),16)
+      const b = parseInt(c.slice(4,6),16)
+      return (0.299*r + 0.587*g + 0.114*b) > 160
+    } catch { return false }
+  }
+
+  const homeText = isLight(homeColor) ? '#111111' : '#ffffff'
+  const awayText = isLight(awayColor) ? '#111111' : '#ffffff'
+
   return (
     <div className="h-7 flex overflow-hidden border border-white/[0.06]"
       style={{ background:'rgba(255,255,255,0.03)' }}>
       <div className="h-full flex items-center justify-end pr-2.5"
         style={{ width:`${h}%`, background:homeColor, transition:'width 1s' }}>
-        <span className="font-bebas text-[13px] text-white drop-shadow-sm">{h}%</span>
+        <span className="font-bebas text-[13px] drop-shadow-sm" style={{ color: homeText }}>{h}%</span>
       </div>
       <div className="flex-1 flex items-center pl-2.5" style={{ background:awayColor }}>
-        <span className="font-bebas text-[13px] text-white drop-shadow-sm">{a}%</span>
+        <span className="font-bebas text-[13px] drop-shadow-sm" style={{ color: awayText }}>{a}%</span>
       </div>
     </div>
   )
@@ -75,7 +94,6 @@ const TeamLogo = ({ logo, name, size = 44 }) => {
   )
 }
 
-// Visual card boxes: small coloured square + count
 const CardBoxes = ({ yellow, red }) => {
   const y = parseInt(yellow)||0
   const r = parseInt(red)||0
@@ -108,27 +126,15 @@ export default function AnalyticsCard({ d }) {
     d.awayTeamColor || '#e0000a',
     homeTeam?.away, awayTeam?.home
   )
-  const homeName  = shortName(d.homeDisplayName, d.homeTeam)
-  const awayName  = shortName(d.awayDisplayName, d.awayTeam)
+  const homeName = shortName(d.homeDisplayName, d.homeTeam)
+  const awayName = shortName(d.awayDisplayName, d.awayTeam)
 
   const isLive = d.status === 'LIVE'
   const stMap  = { FT:'Full Time', HT:'Half Time', LIVE:'● Live' }
 
-  // Split events into home and away for two-column timeline
-  const allEvs = [
-    { t:d.ev1, s:d.ev1side }, { t:d.ev2, s:d.ev2side },
-    { t:d.ev3, s:d.ev3side }, { t:d.ev4, s:d.ev4side },
-  ].filter(e => e.t?.trim())
-  const homeEvs = allEvs.filter(e => e.s === 'home')
-  const awayEvs = allEvs.filter(e => e.s === 'away')
-  const maxEvRows = Math.max(homeEvs.length, awayEvs.length)
-
   return (
     <div id="preview-analytics"
       style={{ width:460, background:'#0d0d14', border:'1px solid rgba(255,255,255,0.1)', maxWidth:'100%' }}>
-
-      {/* Accent bar */}
-      <div style={{ height:3, background:`linear-gradient(90deg,${homeColor},${awayColor})` }} />
 
       {/* Header */}
       <div className="flex justify-between items-start px-4 py-3 border-b border-white/[0.06]">
@@ -136,11 +142,10 @@ export default function AnalyticsCard({ d }) {
         <CardBrand />
       </div>
 
-      {/* Score hero — fully centered layout */}
+      {/* Score hero */}
       <div className="border-b border-white/[0.06]"
         style={{ background:'linear-gradient(135deg,rgba(255,255,255,0.02) 0%,transparent 60%)' }}>
-        <div style={{ display:'grid', gridTemplateColumns:'1fr auto 1fr', alignItems:'center',
-          padding:'16px 20px' }}>
+        <div style={{ display:'grid', gridTemplateColumns:'1fr auto 1fr', alignItems:'center', padding:'16px 20px' }}>
 
           {/* Home — logo + name on same row */}
           <div style={{ display:'flex', flexDirection:'column', alignItems:'flex-start', gap:4 }}>
@@ -151,7 +156,7 @@ export default function AnalyticsCard({ d }) {
             <div className="text-[9px] font-bold tracking-[0.12em] uppercase" style={{ color:homeColor }}>Home</div>
           </div>
 
-          {/* Score — absolute center */}
+          {/* Score */}
           <div style={{ textAlign:'center', padding:'0 12px' }}>
             <div className="font-bebas text-[52px] leading-none text-white tracking-[0.04em]">
               {d.homeScore} – {d.awayScore}
@@ -176,6 +181,7 @@ export default function AnalyticsCard({ d }) {
 
       {/* Stats */}
       <div className="px-4 py-4">
+
         {/* Color key legend */}
         <div style={{ display:'flex', justifyContent:'space-between', marginBottom:12,
           padding:'4px 0', borderBottom:'1px solid rgba(255,255,255,0.05)' }}>
@@ -191,12 +197,13 @@ export default function AnalyticsCard({ d }) {
           </div>
         </div>
 
-        {/* Possession */}
+        {/* Possession — always sums to 100%, text readable on any color */}
         <div className="mb-4">
           <div className="text-[10px] font-bold tracking-[0.18em] uppercase text-white/28 mb-2">Possession</div>
           <PossBar hp={d.homePoss} homeColor={homeColor} awayColor={awayColor} />
         </div>
 
+        {/* Stats — proportional bars (leader = full width, other = proportional) */}
         {[
           { lbl:'Shots',           hv:d.homeShots,   av:d.awayShots },
           { lbl:'Shots on Target', hv:d.homeSOT,     av:d.awaySot },
@@ -213,78 +220,12 @@ export default function AnalyticsCard({ d }) {
           </div>
         ))}
 
-        {/* Cards — no emojis, text only */}
+        {/* Cards */}
         <div className="flex justify-between items-center pt-1 mb-1">
           <CardBoxes yellow={d.homeYellow} red={d.homeRed} />
           <span className="text-[10px] font-bold tracking-[0.15em] uppercase text-white/28">Cards</span>
           <CardBoxes yellow={d.awayYellow} red={d.awayRed} />
         </div>
-      </div>
-
-      {/* Timeline — home events LEFT, away events RIGHT */}
-      <div className="px-4 pb-4 border-t border-white/[0.06]">
-        <div className="text-[9px] font-bold tracking-[0.2em] uppercase text-white/25 mt-3 mb-3">
-          Match Timeline
-        </div>
-
-        {/* Visual timeline bar */}
-        <div className="h-[3px] relative mb-4"
-          style={{ background:`linear-gradient(90deg,${homeColor}40,${awayColor}40)` }}>
-          {allEvs.map((ev, i) => {
-            const min = parseInt(ev.t.match(/\d+/)?.[0]) || ((i+1)*20)
-            return (
-              <div key={i} className="absolute top-[-7px] w-[3px] h-[17px] -translate-x-1/2"
-                style={{ left:`${Math.min((min/95)*100,97)}%`,
-                  background: ev.s==='home' ? homeColor : awayColor }} />
-            )
-          })}
-        </div>
-
-        {/* Two-column scorer list: home LEFT, away RIGHT */}
-        {maxEvRows > 0 && (
-          <div className="flex flex-col gap-1.5">
-            {Array.from({ length: maxEvRows }).map((_, i) => (
-              <div key={i} style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8 }}>
-                {/* Home event */}
-                <div className="flex items-center gap-2">
-                  {homeEvs[i] && (
-                    <>
-                      <span className="font-bebas text-[13px] min-w-[24px] shrink-0"
-                        style={{ color: homeColor }}>
-                        {parseInt(homeEvs[i].t.match(/\d+/)?.[0])||''}' 
-                      </span>
-                      <div className="w-1.5 h-1.5 shrink-0" style={{ background: homeColor }} />
-                      <span className="text-[11px] font-semibold tracking-[0.04em] text-white/80 truncate">
-                        {homeEvs[i].t.replace(/^\d+'\s*/, '')}
-                      </span>
-                    </>
-                  )}
-                </div>
-                {/* Away event */}
-                <div className="flex items-center gap-2 justify-end text-right">
-                  {awayEvs[i] && (
-                    <>
-                      <span className="text-[11px] font-semibold tracking-[0.04em] text-white/38 truncate">
-                        {awayEvs[i].t.replace(/^\d+'\s*/, '')}
-                      </span>
-                      <div className="w-1.5 h-1.5 shrink-0" style={{ background: awayColor }} />
-                      <span className="font-bebas text-[13px] min-w-[24px] shrink-0 text-right"
-                        style={{ color: awayColor }}>
-                        {parseInt(awayEvs[i].t.match(/\d+/)?.[0])||''}'
-                      </span>
-                    </>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-
-      <div className="flex items-center justify-between px-4 py-2.5 border-t border-white/[0.06]"
-        style={{ background:'rgba(0,0,0,0.3)' }}>
-        <CardBrand />
-        <span className="text-[9px] text-white/18 tracking-[0.05em]">{d.venue}</span>
       </div>
     </div>
   )
