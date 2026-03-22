@@ -5,7 +5,7 @@ import TeamSelect from '../ui/TeamSelect'
 import CompetitionSelect from '../ui/CompetitionSelect'
 import { MATCH_STAGES } from '../../lib/teamLogos'
 
-const STAGE_TYPES = ['FULL - TIME','GOAL!','MATCHDAY','HALF - TIME','FT RESULT','FINAL SCORE']
+const STAGE_TYPES = ['FULL - TIME','GOAL!','MATCHDAY','HALF - TIME','FT RESULT','FINAL SCORE','KICK-OFF','AET','PENALTIES']
 
 function BgUpload({ value, onChange }) {
   const ref = useRef()
