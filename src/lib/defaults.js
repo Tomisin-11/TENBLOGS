@@ -75,3 +75,37 @@ export const DEFAULT_RESULT = {
   bgImage:null,
   bgColor:'#100808',
 }
+
+export const DEFAULT_EDITOR = {
+  ratio: '1:1',
+  customW: 1080,
+  customH: 1080,
+  bgColor: '#0d0d14',
+  bgImage: null,
+  bgBrightness: 0.8,
+  bgSaturate: 1,
+  bgPosition: 'center',
+  overlayGradient: 'linear-gradient(to bottom,transparent 40%,rgba(0,0,0,0.9) 100%)',
+  overlayColor: '#000000',
+  overlayOpacity: 0,
+  accentBar: true,
+  accentColor: '#e0000a',
+  showBranding: true,
+  brandingText: 'TEN BLOGS',
+  textBlocks: [
+    {
+      text: 'YOUR HEADLINE',
+      label: 'TEN BLOGS',
+      sub: 'Add your subtext here',
+      color: '#ffffff',
+      labelColor: 'rgba(255,255,255,0.45)',
+      subColor: 'rgba(255,255,255,0.6)',
+      size: 0.065,
+      top: 50,
+      align: 'center',
+      font: 'bebas',
+      uppercase: true,
+      shadow: true,
+    }
+  ],
+}

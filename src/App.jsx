@@ -43,14 +43,14 @@ const Divider = ({ label }) => (
 )
 
 // ── Modal: full-screen card preview + download ─────────────────
-function CardModal({ card, onClose, filename }) {
+function CardModal({ card, onClose, filename, cardType }) {
   const [dlState, setDlState] = useState('idle')
 
   const handleDownload = async () => {
     if (dlState === 'loading') return
     setDlState('loading')
     try {
-      await downloadCardAsPng('modal-card', filename)
+      await downloadCardAsPng('modal-card', filename, cardType)
       setDlState('done')
       setTimeout(() => setDlState('idle'), 2500)
     } catch {
@@ -301,6 +301,7 @@ export default function App() {
         <CardModal
           card={modalCardMap[active]}
           filename={meta?.file || 'tenblogs-card'}
+          cardType={active}
           onClose={() => setModalOpen(false)}
         />
       )}
