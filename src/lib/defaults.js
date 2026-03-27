@@ -76,6 +76,60 @@ export const DEFAULT_RESULT = {
   bgColor:'#100808',
 }
 
+export const DEFAULT_NEWS = {
+  bgImage: null,
+  bgColor: '#0d0d14',
+  category: 'LATEST NEWS',
+  headline: 'SALAH CONFIRMS\nLIVERPOOL EXIT',
+  headlineSize: '96',
+  subtext: 'The Egyptian King leaves Anfield after 8 legendary seasons.',
+  subtextSize: '36',
+  source: 'Sky Sports',
+  sourcePos: 'bottom-right',
+}
+
+export const DEFAULT_TRANSFER = {
+  bgImage: null,
+  bgColor: '#060612',
+  badgeType: 'BREAKING',
+  badgeSubtext: 'NEWS',
+  mainText: 'BELLINGHAM\nTO REAL MADRID',
+  mainTextSize: '100',
+  sideText: 'Fee: £180m. 5-year contract signed.',
+  sideTextSize: '34',
+}
+
+export const DEFAULT_PLAYERSTATS = {
+  playerName: 'BUKAYO SAKA',
+  club: 'Arsenal',
+  match: 'vs Man City',
+  position: 'Forward',
+  selectedStats: ['matchRating', 'goals', 'assists', 'shots', 'bigChancesCreated', 'keyPasses'],
+  matchRating: '8.7',
+  goals: '1',
+  assists: '2',
+  shots: '5',
+  shotsOnTarget: '3',
+  bigChancesCreated: '3',
+  xg: '0.9',
+  touches: '62',
+  dribbles: '4',
+  keyPasses: '5',
+}
+
+export const DEFAULT_TOURNAMENT = {
+  title: 'UEFA PLAY-OFF FINALS',
+  tournamentLabel: '2026 World Cup',
+  bgColor: '#060612',
+  date: 'TUESDAY, 31 MARCH 2026',
+  matchups: [
+    { teamA: 'Bosnia', teamB: 'Italy', label: 'PATH A', winner: '' },
+    { teamA: 'Sweden', teamB: 'Poland', label: 'PATH B', winner: '' },
+    { teamA: 'Kosovo', teamB: 'Türkiye', label: 'PATH C', winner: '' },
+    { teamA: 'Czechia', teamB: 'Denmark', label: 'PATH D', winner: '' },
+  ],
+}
+
 export const DEFAULT_EDITOR = {
   ratio: '1:1',
   customW: 1080,
@@ -108,43 +162,4 @@ export const DEFAULT_EDITOR = {
       shadow: true,
     }
   ],
-}
-
-export const DEFAULT_PLAYER_STATS = {
-  playerName: 'Erling Haaland',
-  clubName: 'Man City',
-  nationality: 'Norway',
-  matchLabel: 'UCL · Quarter Final',
-  matchResult: 'Man City 3 – 1 Arsenal',
-  rating: '9.2',
-  goals: '2',
-  assists: '1',
-  minutes: '90',
-  shots: '5',
-  shotsOnTarget: '4',
-  keyPasses: '2',
-  dribbles: '3',
-  duelsWon: '7',
-  touches: '42',
-}
-
-export const DEFAULT_NEWS = {
-  newsType: 'breaking',
-  category: 'Premier League',
-  headline: 'Haaland Scores Hat-Trick To Fire City Into The Champions League Final',
-  subtext: 'The Norwegian striker was unstoppable as City sealed a 3-1 win on the night.',
-  source: 'Sky Sports',
-}
-
-export const DEFAULT_PLAYER_FEATURE = {
-  playerName: 'Jude Bellingham',
-  clubName: 'Real Madrid',
-  nationality: 'England',
-  position: 'Attacking Midfield',
-  tag: 'PLAYER OF THE MATCH',
-  headline: 'World Class',
-  subtext: '2 Goals · 1 Assist vs Barcelona',
-  statValue: '9.4',
-  statLabel: 'Rating',
-  accentColor: '#e0000a',
 }

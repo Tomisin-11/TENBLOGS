@@ -1,13 +1,33 @@
-import { Medal, Swords, PieChart, Crosshair, CalendarDays, Trophy, ArrowRight, Instagram, Youtube, Facebook, Music2, Download, Zap, Layers } from 'lucide-react'
+import { Medal, Swords, PieChart, Crosshair, CalendarDays, Trophy, ArrowRight, Instagram, Youtube, Facebook, Music2, Download, Zap, Layers, Newspaper, BarChart3 } from 'lucide-react'
 
-const CARDS = [
-  { id:'rating',     Icon:Medal,        label:'Player Rating',   desc:'Photo upload, 12-stat grid, dynamic verdict, rating bar.', tag:'Popular' },
-  { id:'h2h',        Icon:Swords,       label:'Head to Head',    desc:'Team logos, color-coded bars, form dots, previous meetings.', tag:null },
-  { id:'analytics',  Icon:PieChart,     label:'Match Analytics', desc:'Team logos, colored possession/stat bars, match timeline.', tag:null },
-  { id:'prediction', Icon:Crosshair,    label:'Prediction',      desc:'Score pick, reasoning note, animated fan poll.', tag:null },
-  { id:'matchday',   Icon:CalendarDays, label:'Matchday Flyer',  desc:'Pre-match poster with team logos, player photos, competition badge.', tag:'New' },
-  { id:'result',     Icon:Trophy,       label:'Result Flyer',    desc:'Full-time poster with background photo and team crests.', tag:'New' },
+const CARD_GROUPS = [
+  {
+    label: 'Stats Cards',
+    cards: [
+      { id:'rating',     Icon:Medal,      label:'Player Rating',   desc:'Photo upload, 12-stat grid, dynamic verdict, rating bar.', tag:'Popular' },
+      { id:'h2h',        Icon:Swords,     label:'Head to Head',    desc:'Team logos, color-coded bars, form dots, previous meetings.', tag:null },
+      { id:'analytics',  Icon:PieChart,   label:'Match Analytics', desc:'Team logos, colored possession/stat bars, match timeline.', tag:null },
+      { id:'prediction', Icon:Crosshair,  label:'Prediction',      desc:'Score pick, reasoning note, animated fan poll.', tag:null },
+    ],
+  },
+  {
+    label: 'Match Flyers',
+    cards: [
+      { id:'matchday', Icon:CalendarDays, label:'Matchday Flyer', desc:'Pre-match poster with team logos, player photos, competition badge.', tag:null },
+      { id:'result',   Icon:Trophy,       label:'Result Flyer',   desc:'Full-time poster with background photo and team crests.', tag:null },
+    ],
+  },
+  {
+    label: 'Content Cards',
+    cards: [
+      { id:'news',        Icon:Newspaper,  label:'News Card',           desc:'Full-bleed background, bold headline, category tag, source reference.', tag:'New' },
+      { id:'transfer',    Icon:Zap,        label:'Transfer / Breaking', desc:'Player image background, badge selector, large headline with side detail text.', tag:'New' },
+      { id:'playerstats', Icon:BarChart3,  label:'Player Stats',        desc:'Full-bleed player photo, pick any 6 stats by position, centered bottom grid.', tag:'New' },
+      { id:'tournament',  Icon:Trophy,     label:'Tournament Card',     desc:'Auto-loads country flags, matchup brackets, path labels and winner highlights.', tag:'New' },
+    ],
+  },
 ]
+const CARDS = CARD_GROUPS.flatMap(g => g.cards)
 
 const PLATFORMS = [
   { Icon:Instagram, label:'Instagram', tip:'1080×1080' },
@@ -59,38 +79,42 @@ export default function Dashboard({ goTo }) {
         </div>
       </div>
 
-      {/* Cards grid */}
-      <div>
-        <div className="flex items-center gap-3 mb-4">
-          <div className="w-[3px] h-5 bg-[#e0000a]" />
-          <span className="text-[11px] font-bold tracking-[0.3em] uppercase text-white/35">Choose a Card Type</span>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-          {CARDS.map(({ id, Icon, label, desc, tag }) => (
-            <button key={id} onClick={() => goTo(id)}
-              className="group relative text-left border border-white/[0.07] p-5 hover:border-[#e0000a]/40 transition-all duration-200 overflow-hidden"
-              style={{ background:'rgba(255,255,255,0.02)' }}>
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-                style={{ background:'linear-gradient(135deg,rgba(224,0,10,0.07) 0%,transparent 60%)' }} />
-              <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#e0000a] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
-              <div className="relative flex items-start justify-between gap-3 mb-3">
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 border border-white/[0.08] bg-white/[0.04] flex items-center justify-center group-hover:border-[#e0000a]/40 group-hover:bg-[#e0000a]/10 transition-all">
-                    <Icon size={17} strokeWidth={1.8} className="text-white/50 group-hover:text-[#e0000a] transition-colors" />
+      {/* Cards grid — grouped */}
+      <div className="flex flex-col gap-6">
+        {CARD_GROUPS.map((group) => (
+          <div key={group.label}>
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-[3px] h-5 bg-[#e0000a]" />
+              <span className="text-[11px] font-bold tracking-[0.3em] uppercase text-white/35">{group.label}</span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              {group.cards.map(({ id, Icon, label, desc, tag }) => (
+                <button key={id} onClick={() => goTo(id)}
+                  className="group relative text-left border border-white/[0.07] p-5 hover:border-[#e0000a]/40 transition-all duration-200 overflow-hidden"
+                  style={{ background:'rgba(255,255,255,0.02)' }}>
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                    style={{ background:'linear-gradient(135deg,rgba(224,0,10,0.07) 0%,transparent 60%)' }} />
+                  <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#e0000a] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+                  <div className="relative flex items-start justify-between gap-3 mb-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-9 h-9 border border-white/[0.08] bg-white/[0.04] flex items-center justify-center group-hover:border-[#e0000a]/40 group-hover:bg-[#e0000a]/10 transition-all">
+                        <Icon size={17} strokeWidth={1.8} className="text-white/50 group-hover:text-[#e0000a] transition-colors" />
+                      </div>
+                      <span className="font-bebas text-[19px] tracking-[0.04em] text-white">{label}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 shrink-0">
+                      {tag && (
+                        <span className="text-[7px] font-bold tracking-[0.15em] uppercase bg-[#e0000a]/15 border border-[#e0000a]/25 text-[#e0000a] px-2 py-0.5">{tag}</span>
+                      )}
+                      <ArrowRight size={13} className="text-white/20 group-hover:text-white/60 group-hover:translate-x-1 transition-all" />
+                    </div>
                   </div>
-                  <span className="font-bebas text-[19px] tracking-[0.04em] text-white">{label}</span>
-                </div>
-                <div className="flex items-center gap-1.5 shrink-0">
-                  {tag && (
-                    <span className="text-[7px] font-bold tracking-[0.15em] uppercase bg-[#e0000a]/15 border border-[#e0000a]/25 text-[#e0000a] px-2 py-0.5">{tag}</span>
-                  )}
-                  <ArrowRight size={13} className="text-white/20 group-hover:text-white/60 group-hover:translate-x-1 transition-all" />
-                </div>
-              </div>
-              <p className="relative text-[11px] text-white/35 leading-relaxed">{desc}</p>
-            </button>
-          ))}
-        </div>
+                  <p className="relative text-[11px] text-white/35 leading-relaxed">{desc}</p>
+                </button>
+              ))}
+            </div>
+          </div>
+        ))}
       </div>
 
       {/* How it works */}

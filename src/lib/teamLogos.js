@@ -320,6 +320,38 @@ export const COMPETITIONS = {
   'Ligue 1':                { logo: comp('france_ligue-1'),                    color: '#DFFE00', bg: '#0d0d00' },
   'Eredivisie':             { logo: comp('netherlands_eredivisie'),            color: '#CC0000', bg: '#1a0000' },
   'Primeira Liga':          { logo: comp('portugal_portuguese-football-federation'), color: '#009B3A', bg: '#001a0b' },
+  // National & Internationals
+  'Friendly International': { logo: null, color: '#555555', bg: '#0a0a0a' },
+  'International Friendly': { logo: null, color: '#555555', bg: '#0a0a0a' },
+  'World Cup Qualifier':    { logo: null, color: '#004B9C', bg: '#00031a' },
+  'Euro Qualifier':         { logo: null, color: '#003DA5', bg: '#00031a' },
+  'AFCON Qualifier':        { logo: null, color: '#007B40', bg: '#001a0b' },
+  'AFCON':                  { logo: null, color: '#007B40', bg: '#001a0b' },
+  'Copa America':           { logo: null, color: '#CC0000', bg: '#1a0000' },
+  'Gold Cup':               { logo: null, color: '#CFB53B', bg: '#0d0a00' },
+  'Asian Cup':              { logo: null, color: '#003DA5', bg: '#00031a' },
+  // English
+  'Carabao Cup':            { logo: comp('england_efl-cup'), color: '#00A0C6', bg: '#001419' },
+  // Scottish
+  'Scottish Premiership':   { logo: null, color: '#003DA5', bg: '#00031a' },
+  'Scottish Cup':           { logo: null, color: '#003DA5', bg: '#00031a' },
+  // MLS
+  'MLS':                    { logo: null, color: '#C41E3A', bg: '#1a0005' },
+  // Saudi Pro League
+  'Saudi Pro League':       { logo: null, color: '#007A3D', bg: '#001a0e' },
+  // Brazilian
+  'Brasileirao':            { logo: null, color: '#009C3B', bg: '#001a09' },
+  // Argentine
+  'Liga Profesional':       { logo: null, color: '#74ACDF', bg: '#00091a' },
+  // Turkish
+  'Süper Lig':              { logo: null, color: '#CC0000', bg: '#1a0000' },
+  // Greek
+  'Super League Greece':    { logo: null, color: '#003DA5', bg: '#00031a' },
+  // Club World Cup
+  'Club World Cup':         { logo: comp('tournaments_fifa-club-world-cup'), color: '#004B9C', bg: '#00031a' },
+  // Play-offs
+  'World Cup Play-Off':     { logo: comp('tournaments_fifa-world-cup-2026'), color: '#004B9C', bg: '#00031a' },
+  'UEFA Play-Off':          { logo: null, color: '#003DA5', bg: '#00031a' },
 }
 
 export const COMPETITION_NAMES = Object.keys(COMPETITIONS)

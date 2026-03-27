@@ -1,17 +1,37 @@
-import { LayoutDashboard, Medal, Swords, PieChart, Crosshair, CalendarDays, Trophy, ChevronLeft, ChevronRight, X, BarChart2, Zap, Star } from 'lucide-react'
+import { LayoutDashboard, Medal, Swords, PieChart, Crosshair, CalendarDays, Trophy, ChevronLeft, ChevronRight, X, Newspaper, Zap, BarChart3 } from 'lucide-react'
 
-const NAV = [
-  { id:'dashboard',      Icon:LayoutDashboard, label:'Dashboard' },
-  { id:'rating',         Icon:Medal,           label:'Player Rating' },
-  { id:'h2h',            Icon:Swords,          label:'Head to Head' },
-  { id:'analytics',      Icon:PieChart,        label:'Match Analytics' },
-  { id:'prediction',     Icon:Crosshair,       label:'Prediction' },
-  { id:'matchday',       Icon:CalendarDays,    label:'Matchday Flyer' },
-  { id:'result',         Icon:Trophy,          label:'Result Flyer' },
-  { id:'playerstats',    Icon:BarChart2,        label:'Player Stats',    badge:'NEW' },
-  { id:'news',           Icon:Zap,             label:'News Card',       badge:'NEW' },
-  { id:'playerfeature',  Icon:Star,            label:'Player Feature',  badge:'NEW' },
+const NAV_GROUPS = [
+  {
+    label: null,
+    items: [{ id:'dashboard', Icon:LayoutDashboard, label:'Dashboard' }],
+  },
+  {
+    label: 'Stats Cards',
+    items: [
+      { id:'rating',     Icon:Medal,      label:'Player Rating' },
+      { id:'h2h',        Icon:Swords,     label:'Head to Head' },
+      { id:'analytics',  Icon:PieChart,   label:'Match Analytics' },
+      { id:'prediction', Icon:Crosshair,  label:'Prediction' },
+    ],
+  },
+  {
+    label: 'Match Flyers',
+    items: [
+      { id:'matchday',   Icon:CalendarDays, label:'Matchday Flyer' },
+      { id:'result',     Icon:Trophy,       label:'Result Flyer' },
+    ],
+  },
+  {
+    label: 'Content Cards',
+    items: [
+      { id:'news',        Icon:Newspaper,  label:'News Card',           badge:'NEW' },
+      { id:'transfer',    Icon:Zap,        label:'Transfer / Breaking', badge:'NEW' },
+      { id:'playerstats', Icon:BarChart3,  label:'Player Stats',        badge:'NEW' },
+      { id:'tournament',  Icon:Trophy,     label:'Tournament',          badge:'NEW' },
+    ],
+  },
 ]
+const NAV = NAV_GROUPS.flatMap(g => g.items)
 
 export default function Sidebar({ active, setActive, collapsed, setCollapsed, mobileOpen, setMobileOpen }) {
   const nav = id => { setActive(id); setMobileOpen(false) }
@@ -65,39 +85,43 @@ export default function Sidebar({ active, setActive, collapsed, setCollapsed, mo
 
         {/* Nav */}
         <nav className="flex-1 overflow-y-auto py-3 no-scrollbar">
-          {!collapsed && (
-            <div className="px-4 mb-2 text-[9px] font-bold tracking-[0.3em] uppercase text-white/25">Navigate</div>
-          )}
           <div className="flex flex-col gap-0.5 px-2">
-            {NAV.map(({ id, Icon, label, badge }) => {
-              const on = active === id
-              return (
-                <button key={id} onClick={() => nav(id)} title={collapsed ? label : undefined}
-                  className={[
-                    'flex items-center gap-3 w-full transition-all duration-150 relative group',
-                    collapsed ? 'justify-center px-0 py-3' : 'px-3 py-2.5',
-                    on ? 'text-white' : 'text-white/45 hover:text-white/80',
-                  ].join(' ')}
-                  style={on ? { background:'linear-gradient(90deg,rgba(224,0,10,0.18),rgba(224,0,10,0.04))', borderLeft:'2px solid #e0000a' } : { borderLeft:'2px solid transparent' }}>
-                  {collapsed && on && (
-                    <div className="absolute right-1.5 top-1/2 -translate-y-1/2 w-1 h-1 rounded-full bg-[#e0000a]" />
-                  )}
-                  <Icon size={16} strokeWidth={on ? 2.5 : 1.8}
-                    className={`shrink-0 ${on ? 'text-[#e0000a]' : 'text-white/35 group-hover:text-white/60'}`} />
-                  {!collapsed && (
-                    <>
-                      <span className="text-[13px] font-semibold tracking-[0.04em] truncate flex-1 text-left">{label}</span>
-                      {badge && (
-                        <span className="text-[7px] font-bold tracking-[0.12em] bg-[#e0000a]/20 border border-[#e0000a]/30 text-[#e0000a] px-1.5 py-0.5 shrink-0">{badge}</span>
+            {NAV_GROUPS.map((group, gi) => (
+              <div key={gi}>
+                {!collapsed && group.label && (
+                  <div className="px-3 pt-3 pb-1 text-[8px] font-bold tracking-[0.3em] uppercase text-white/20">{group.label}</div>
+                )}
+                {group.items.map(({ id, Icon, label, badge }) => {
+                  const on = active === id
+                  return (
+                    <button key={id} onClick={() => nav(id)} title={collapsed ? label : undefined}
+                      className={[
+                        'flex items-center gap-3 w-full transition-all duration-150 relative group',
+                        collapsed ? 'justify-center px-0 py-3' : 'px-3 py-2.5',
+                        on ? 'text-white' : 'text-white/45 hover:text-white/80',
+                      ].join(' ')}
+                      style={on ? { background:'linear-gradient(90deg,rgba(224,0,10,0.18),rgba(224,0,10,0.04))', borderLeft:'2px solid #e0000a' } : { borderLeft:'2px solid transparent' }}>
+                      {collapsed && on && (
+                        <div className="absolute right-1.5 top-1/2 -translate-y-1/2 w-1 h-1 rounded-full bg-[#e0000a]" />
                       )}
-                      {on && !badge && (
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#e0000a] shrink-0" />
+                      <Icon size={16} strokeWidth={on ? 2.5 : 1.8}
+                        className={`shrink-0 ${on ? 'text-[#e0000a]' : 'text-white/35 group-hover:text-white/60'}`} />
+                      {!collapsed && (
+                        <>
+                          <span className="text-[13px] font-semibold tracking-[0.04em] truncate flex-1 text-left">{label}</span>
+                          {badge && (
+                            <span className="text-[7px] font-bold tracking-[0.12em] bg-[#e0000a]/20 border border-[#e0000a]/30 text-[#e0000a] px-1.5 py-0.5 shrink-0">{badge}</span>
+                          )}
+                          {on && !badge && (
+                            <div className="w-1.5 h-1.5 rounded-full bg-[#e0000a] shrink-0" />
+                          )}
+                        </>
                       )}
-                    </>
-                  )}
-                </button>
-              )
-            })}
+                    </button>
+                  )
+                })}
+              </div>
+            ))}
           </div>
         </nav>
 
