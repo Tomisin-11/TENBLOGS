@@ -109,3 +109,42 @@ export const DEFAULT_EDITOR = {
     }
   ],
 }
+
+export const DEFAULT_PLAYER_STATS = {
+  playerName: 'Erling Haaland',
+  clubName: 'Man City',
+  nationality: 'Norway',
+  matchLabel: 'UCL · Quarter Final',
+  matchResult: 'Man City 3 – 1 Arsenal',
+  rating: '9.2',
+  goals: '2',
+  assists: '1',
+  minutes: '90',
+  shots: '5',
+  shotsOnTarget: '4',
+  keyPasses: '2',
+  dribbles: '3',
+  duelsWon: '7',
+  touches: '42',
+}
+
+export const DEFAULT_NEWS = {
+  newsType: 'breaking',
+  category: 'Premier League',
+  headline: 'Haaland Scores Hat-Trick To Fire City Into The Champions League Final',
+  subtext: 'The Norwegian striker was unstoppable as City sealed a 3-1 win on the night.',
+  source: 'Sky Sports',
+}
+
+export const DEFAULT_PLAYER_FEATURE = {
+  playerName: 'Jude Bellingham',
+  clubName: 'Real Madrid',
+  nationality: 'England',
+  position: 'Attacking Midfield',
+  tag: 'PLAYER OF THE MATCH',
+  headline: 'World Class',
+  subtext: '2 Goals · 1 Assist vs Barcelona',
+  statValue: '9.4',
+  statLabel: 'Rating',
+  accentColor: '#e0000a',
+}

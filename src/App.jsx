@@ -5,33 +5,43 @@ import Sidebar  from './components/layout/Sidebar'
 import Topbar   from './components/layout/Topbar'
 import Dashboard from './pages/Dashboard'
 
-import RatingCard     from './components/cards/RatingCard'
-import H2HCard        from './components/cards/H2HCard'
-import AnalyticsCard  from './components/cards/AnalyticsCard'
-import PredictionCard from './components/cards/PredictionCard'
-import MatchdayFlyer  from './components/cards/MatchdayFlyer'
-import ResultFlyer    from './components/cards/ResultFlyer'
+import RatingCard        from './components/cards/RatingCard'
+import H2HCard           from './components/cards/H2HCard'
+import AnalyticsCard     from './components/cards/AnalyticsCard'
+import PredictionCard    from './components/cards/PredictionCard'
+import MatchdayFlyer     from './components/cards/MatchdayFlyer'
+import ResultFlyer       from './components/cards/ResultFlyer'
+import PlayerStatsCard   from './components/cards/PlayerStatsCard'
+import NewsCard          from './components/cards/NewsCard'
+import PlayerFeatureCard from './components/cards/PlayerFeatureCard'
 
-import RatingForm        from './components/forms/RatingForm'
-import H2HForm           from './components/forms/H2HForm'
-import AnalyticsForm     from './components/forms/AnalyticsForm'
-import PredictionForm    from './components/forms/PredictionForm'
-import MatchdayFlyerForm from './components/forms/MatchdayFlyerForm'
-import ResultFlyerForm   from './components/forms/ResultFlyerForm'
+import RatingForm          from './components/forms/RatingForm'
+import H2HForm             from './components/forms/H2HForm'
+import AnalyticsForm       from './components/forms/AnalyticsForm'
+import PredictionForm      from './components/forms/PredictionForm'
+import MatchdayFlyerForm   from './components/forms/MatchdayFlyerForm'
+import ResultFlyerForm     from './components/forms/ResultFlyerForm'
+import PlayerStatsForm     from './components/forms/PlayerStatsForm'
+import NewsForm            from './components/forms/NewsForm'
+import PlayerFeatureForm   from './components/forms/PlayerFeatureForm'
 
 import { downloadCardAsPng } from './lib/download'
 import {
   DEFAULT_RATING, DEFAULT_H2H, DEFAULT_ANALYTICS,
   DEFAULT_PREDICTION, DEFAULT_MATCHDAY, DEFAULT_RESULT,
+  DEFAULT_PLAYER_STATS, DEFAULT_NEWS, DEFAULT_PLAYER_FEATURE,
 } from './lib/defaults'
 
 const DL_META = {
-  rating:     { id:'modal-card', file:'tenblogs-player-rating' },
-  h2h:        { id:'modal-card', file:'tenblogs-h2h' },
-  analytics:  { id:'modal-card', file:'tenblogs-analytics' },
-  prediction: { id:'modal-card', file:'tenblogs-prediction' },
-  matchday:   { id:'modal-card', file:'tenblogs-matchday-flyer' },
-  result:     { id:'modal-card', file:'tenblogs-result-flyer' },
+  rating:        { id:'modal-card', file:'tenblogs-player-rating' },
+  h2h:           { id:'modal-card', file:'tenblogs-h2h' },
+  analytics:     { id:'modal-card', file:'tenblogs-analytics' },
+  prediction:    { id:'modal-card', file:'tenblogs-prediction' },
+  matchday:      { id:'modal-card', file:'tenblogs-matchday-flyer' },
+  result:        { id:'modal-card', file:'tenblogs-result-flyer' },
+  playerstats:   { id:'modal-card', file:'tenblogs-player-stats' },
+  news:          { id:'modal-card', file:'tenblogs-news-card' },
+  playerfeature: { id:'modal-card', file:'tenblogs-player-feature' },
 }
 
 const Divider = ({ label }) => (
@@ -200,37 +210,52 @@ export default function App() {
   const [pD, setPD]     = useState(DEFAULT_PREDICTION)
   const [mD, setMD]     = useState(DEFAULT_MATCHDAY)
   const [resD, setResD] = useState(DEFAULT_RESULT)
+  const [psD,  setPsD]  = useState(DEFAULT_PLAYER_STATS)
+  const [psImg, setPsImg] = useState(null)
+  const [nD,   setND]   = useState(DEFAULT_NEWS)
+  const [nImg,  setNImg]  = useState(null)
+  const [pfD,  setPfD]  = useState(DEFAULT_PLAYER_FEATURE)
+  const [pfImg, setPfImg] = useState(null)
 
   const isCard = active !== 'dashboard'
   const previewPanelRef = useRef(null)
 
   // The card rendered in the MODAL (not clipped by any overflow)
   const modalCardMap = {
-    rating:     <RatingCard     d={rD}   img={rImg} />,
-    h2h:        <H2HCard        d={hD} />,
-    analytics:  <AnalyticsCard  d={aD} />,
-    prediction: <PredictionCard d={pD} />,
-    matchday:   <MatchdayFlyer  d={mD} />,
-    result:     <ResultFlyer    d={resD} />,
+    rating:        <RatingCard        d={rD}   img={rImg} />,
+    h2h:           <H2HCard           d={hD} />,
+    analytics:     <AnalyticsCard     d={aD} />,
+    prediction:    <PredictionCard    d={pD} />,
+    matchday:      <MatchdayFlyer     d={mD} />,
+    result:        <ResultFlyer       d={resD} />,
+    playerstats:   <PlayerStatsCard   d={psD}  img={psImg} />,
+    news:          <NewsCard          d={nD}   img={nImg} />,
+    playerfeature: <PlayerFeatureCard d={pfD}  img={pfImg} />,
   }
 
   // Same card in the inline preview (thumbnail)
   const previewMap = {
-    rating:     <RatingCard     d={rD}   img={rImg} />,
-    h2h:        <H2HCard        d={hD} />,
-    analytics:  <AnalyticsCard  d={aD} />,
-    prediction: <PredictionCard d={pD} />,
-    matchday:   <MatchdayFlyer  d={mD} />,
-    result:     <ResultFlyer    d={resD} />,
+    rating:        <RatingCard        d={rD}   img={rImg} />,
+    h2h:           <H2HCard           d={hD} />,
+    analytics:     <AnalyticsCard     d={aD} />,
+    prediction:    <PredictionCard    d={pD} />,
+    matchday:      <MatchdayFlyer     d={mD} />,
+    result:        <ResultFlyer       d={resD} />,
+    playerstats:   <PlayerStatsCard   d={psD}  img={psImg} />,
+    news:          <NewsCard          d={nD}   img={nImg} />,
+    playerfeature: <PlayerFeatureCard d={pfD}  img={pfImg} />,
   }
 
   const formMap = {
-    rating:     <RatingForm     d={rD}   setD={setRD}   img={rImg} setImg={setRImg} />,
-    h2h:        <H2HForm        d={hD}   setD={setHD} />,
-    analytics:  <AnalyticsForm  d={aD}   setD={setAD} />,
-    prediction: <PredictionForm d={pD}   setD={setPD} />,
-    matchday:   <MatchdayFlyerForm d={mD}  setD={setMD} />,
-    result:     <ResultFlyerForm   d={resD} setD={setResD} />,
+    rating:        <RatingForm          d={rD}   setD={setRD}   img={rImg}  setImg={setRImg} />,
+    h2h:           <H2HForm             d={hD}   setD={setHD} />,
+    analytics:     <AnalyticsForm       d={aD}   setD={setAD} />,
+    prediction:    <PredictionForm      d={pD}   setD={setPD} />,
+    matchday:      <MatchdayFlyerForm   d={mD}   setD={setMD} />,
+    result:        <ResultFlyerForm     d={resD} setD={setResD} />,
+    playerstats:   <PlayerStatsForm     d={psD}  setD={setPsD}  img={psImg} setImg={setPsImg} />,
+    news:          <NewsForm            d={nD}   setD={setND}   img={nImg}  setImg={setNImg} />,
+    playerfeature: <PlayerFeatureForm   d={pfD}  setD={setPfD}  img={pfImg} setImg={setPfImg} />,
   }
 
   const meta = DL_META[active]

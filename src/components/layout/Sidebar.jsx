@@ -1,13 +1,16 @@
-import { LayoutDashboard, Medal, Swords, PieChart, Crosshair, CalendarDays, Trophy, ChevronLeft, ChevronRight, X } from 'lucide-react'
+import { LayoutDashboard, Medal, Swords, PieChart, Crosshair, CalendarDays, Trophy, ChevronLeft, ChevronRight, X, BarChart2, Zap, Star } from 'lucide-react'
 
 const NAV = [
-  { id:'dashboard',  Icon:LayoutDashboard, label:'Dashboard' },
-  { id:'rating',     Icon:Medal,           label:'Player Rating' },
-  { id:'h2h',        Icon:Swords,          label:'Head to Head' },
-  { id:'analytics',  Icon:PieChart,        label:'Match Analytics' },
-  { id:'prediction', Icon:Crosshair,       label:'Prediction' },
-  { id:'matchday',   Icon:CalendarDays,    label:'Matchday Flyer', badge:'NEW' },
-  { id:'result',     Icon:Trophy,          label:'Result Flyer',   badge:'NEW' },
+  { id:'dashboard',      Icon:LayoutDashboard, label:'Dashboard' },
+  { id:'rating',         Icon:Medal,           label:'Player Rating' },
+  { id:'h2h',            Icon:Swords,          label:'Head to Head' },
+  { id:'analytics',      Icon:PieChart,        label:'Match Analytics' },
+  { id:'prediction',     Icon:Crosshair,       label:'Prediction' },
+  { id:'matchday',       Icon:CalendarDays,    label:'Matchday Flyer' },
+  { id:'result',         Icon:Trophy,          label:'Result Flyer' },
+  { id:'playerstats',    Icon:BarChart2,        label:'Player Stats',    badge:'NEW' },
+  { id:'news',           Icon:Zap,             label:'News Card',       badge:'NEW' },
+  { id:'playerfeature',  Icon:Star,            label:'Player Feature',  badge:'NEW' },
 ]
 
 export default function Sidebar({ active, setActive, collapsed, setCollapsed, mobileOpen, setMobileOpen }) {

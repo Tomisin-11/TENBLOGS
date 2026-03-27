@@ -43,7 +43,7 @@ const AnBar = ({ hv, av, homeColor, awayColor, gold }) => {
     <div style={{ height:6, display:'flex', overflow:'hidden', borderRadius:1,
       background:'rgba(255,255,255,0.05)' }}>
       <div style={{ width:`${hPct}%`, background:hColor, transition:'width 0.7s', height:'100%' }} />
-      <div style={{ width:`${aPct}%`, background:aColor, transition:'width 0.7s', height:'100%', marginLeft:'auto' }} />
+      <div style={{ width:`${aPct}%`, background:aColor, transition:'width 0.7s', height:'100%' }} />
     </div>
   )
 }
