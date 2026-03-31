@@ -31,8 +31,10 @@ async function srcToDataUrl(src) {
 }
 
 /**
- * Walk every <img> in the node and replace its src with an inlined data-URL.
- * This is the core fix for "background missing on first download".
+ * Walk every <img> in the node:
+ *  1. Convert any non-data src to a data-URL (SVG logos, http images)
+ *  2. Force img.decode() on ALL images — including already-data: ones —
+ *     so the browser fully rasterises even a large JPEG before capture.
  */
 async function inlineAllImages(node) {
   const imgs = Array.from(node.querySelectorAll('img'))
@@ -40,25 +42,30 @@ async function inlineAllImages(node) {
 
   await Promise.all(imgs.map(async (img) => {
     const originalSrc = img.getAttribute('src') || img.src
-    if (!originalSrc || originalSrc.startsWith('data:')) return
-    const dataUrl = await srcToDataUrl(originalSrc)
-    if (dataUrl && dataUrl !== originalSrc) {
-      img.src = dataUrl
-      // Wait for the browser to process the new src
-      if (!img.complete || img.naturalWidth === 0) {
-        await new Promise(res => {
-          img.onload  = res
-          img.onerror = res
-          setTimeout(res, 500) // safety timeout
-        })
+
+    // Step 1: convert non-data srcs to data URLs
+    if (originalSrc && !originalSrc.startsWith('data:')) {
+      const dataUrl = await srcToDataUrl(originalSrc)
+      if (dataUrl && dataUrl !== originalSrc) {
+        img.src = dataUrl
       }
+    }
+
+    // Step 2: force full decode — this is the key fix for large images.
+    // img.decode() resolves only when the browser has fully decoded the
+    // pixel data, not just when the src is set. Without this, a 10 MB JPEG
+    // stored as a base64 data URL can still be mid-decode when toPng fires.
+    try {
+      await img.decode()
+    } catch {
+      // decode() can throw if the image is hidden / zero-sized; safe to ignore
     }
   }))
 
-  // Final settle — give browser two frames to repaint
+  // Give the compositor two frames to paint the freshly-decoded images
   await new Promise(r => requestAnimationFrame(r))
   await new Promise(r => requestAnimationFrame(r))
-  await new Promise(r => setTimeout(r, 120))
+  await new Promise(r => setTimeout(r, 80))
 }
 
 export async function downloadCardAsPng(elementId, filename = 'tenblogs-card', cardType = '') {

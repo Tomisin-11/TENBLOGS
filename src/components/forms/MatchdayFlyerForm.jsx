@@ -7,7 +7,27 @@ import { MATCH_STAGES } from '../../lib/teamLogos'
 
 function PlayerUpload({ label, value, onChange }) {
   const ref = useRef()
-  const onFile = e => { const f=e.target.files[0]; if(!f)return; const r=new FileReader(); r.onload=ev=>onChange(ev.target.result); r.readAsDataURL(f) }
+  const onFile = e => {
+    const f = e.target.files[0]; if (!f) return
+    const r = new FileReader()
+    r.onload = ev => {
+      const img = new Image()
+      img.onload = () => {
+        const MAX = 1920
+        let { naturalWidth: w, naturalHeight: h } = img
+        if (w > MAX || h > MAX) {
+          const ratio = Math.min(MAX / w, MAX / h)
+          w = Math.round(w * ratio); h = Math.round(h * ratio)
+        }
+        const canvas = document.createElement('canvas')
+        canvas.width = w; canvas.height = h
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h)
+        onChange(canvas.toDataURL('image/jpeg', 0.88))
+      }
+      img.src = ev.target.result
+    }
+    r.readAsDataURL(f)
+  }
   return (
     <div>
       <label className="block text-[9px] font-bold tracking-[0.2em] uppercase text-white/30 mb-1.5">{label}</label>
