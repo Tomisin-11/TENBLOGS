@@ -1,9 +1,8 @@
-import { TEAM_NAMES, TEAMS } from '../../lib/teamLogos'
+import { CLUB_NAMES, COUNTRY_NAMES, TEAMS } from '../../lib/teamLogos'
 
 /**
- * TeamSelect — instant logo display using local SVG files.
- * No async fetching needed — logos are in /public/logos/clubs/.
- * When a team is selected, onChange({ name, logoPath, homeColor, awayColor }) is called.
+ * TeamSelect — shows clubs and national teams in separate optgroups.
+ * Logos are local SVGs — no async fetching needed.
  */
 export default function TeamSelect({ label, value, onChange, colorValue, onColorChange, side = 'home' }) {
   const team = TEAMS[value]
@@ -33,12 +32,19 @@ export default function TeamSelect({ label, value, onChange, colorValue, onColor
         <span className="text-[13px] font-semibold text-white/85 truncate">{value}</span>
       </div>
 
-      {/* Dropdown */}
+      {/* Grouped dropdown: Clubs → Countries */}
       <select value={value} onChange={e => handleSelect(e.target.value)}
         className="w-full bg-white/[0.04] border border-white/[0.08] hover:border-white/[0.15] text-white/90 text-[13px] px-3 py-2 transition-colors focus:border-[#e0000a]">
-        {TEAM_NAMES.map(n => (
-          <option key={n} value={n} className="bg-[#0d0d16]">{n}</option>
-        ))}
+        <optgroup label="⚽  Clubs" style={{ background:'#0d0d16', color:'rgba(255,255,255,0.45)', fontWeight:700 }}>
+          {CLUB_NAMES.map(n => (
+            <option key={n} value={n} className="bg-[#0d0d16]">{n}</option>
+          ))}
+        </optgroup>
+        <optgroup label="🌍  Countries" style={{ background:'#0d0d16', color:'rgba(255,255,255,0.45)', fontWeight:700 }}>
+          {COUNTRY_NAMES.map(n => (
+            <option key={n} value={n} className="bg-[#0d0d16]">{n}</option>
+          ))}
+        </optgroup>
       </select>
 
       {/* Kit color */}

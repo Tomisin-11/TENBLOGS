@@ -23,22 +23,18 @@ export default function ResultFlyer({ d }) {
 
       <div style={{ position: 'absolute', top: 28, left: 36, zIndex: 2, fontFamily: "'Bebas Neue',sans-serif", fontSize: 28, letterSpacing: '0.22em', color: 'rgba(255,255,255,0.4)' }}>TEN BLOGS</div>
 
-      {hasComp && (
-        <div style={{ position: 'absolute', top: 0, right: 0, width: 280, height: 200, background: 'radial-gradient(ellipse at top right, rgba(0,0,0,0.52) 0%, transparent 75%)', pointerEvents: 'none', zIndex: 1 }} />
-      )}
-
-      {hasComp && (
-        <div style={{ position: 'absolute', top: 20, right: 36, zIndex: 2, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 8 }}>
-          {(d.competitionLogo || COMPETITIONS[d.competition]?.logo) && (
-            <img src={d.competitionLogo || COMPETITIONS[d.competition]?.logo} alt={d.competition} style={{ height: 68, objectFit: 'contain' }} />
-          )}
-          {d.competition && !d.competitionLogo && !COMPETITIONS[d.competition]?.logo && (
-            <div style={{ fontSize: 18, fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', background: 'rgba(255,255,255,0.06)', padding: '6px 16px', border: '1px solid rgba(255,255,255,0.1)' }}>
-              {d.competition}
+      {hasComp && (() => {
+        const compLogoSrc = d.competitionLogo || COMPETITIONS[d.competition]?.logo
+        if (!compLogoSrc) return null
+        return (
+          <>
+            <div style={{ position: 'absolute', top: 0, right: 0, width: 280, height: 200, background: 'radial-gradient(ellipse at top right, rgba(0,0,0,0.52) 0%, transparent 75%)', pointerEvents: 'none', zIndex: 1 }} />
+            <div style={{ position: 'absolute', top: 20, right: 36, zIndex: 2, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 8 }}>
+              <img src={compLogoSrc} alt={d.competition} style={{ height: 68, objectFit: 'contain' }} />
             </div>
-          )}
-        </div>
-      )}
+          </>
+        )
+      })()}
 
       {/* Stage label */}
       <div style={{ position: 'absolute', top: '44%', left: 0, right: 0, zIndex: 2, textAlign: 'center', transform: 'translateY(-50%)' }}>

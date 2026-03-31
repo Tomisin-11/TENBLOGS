@@ -55,9 +55,10 @@ async function inlineAllImages(node) {
     }
   }))
 
-  // Final settle — give browser a frame to repaint
+  // Final settle — give browser two frames to repaint
   await new Promise(r => requestAnimationFrame(r))
-  await new Promise(r => setTimeout(r, 60))
+  await new Promise(r => requestAnimationFrame(r))
+  await new Promise(r => setTimeout(r, 120))
 }
 
 export async function downloadCardAsPng(elementId, filename = 'tenblogs-card', cardType = '') {
@@ -66,7 +67,7 @@ export async function downloadCardAsPng(elementId, filename = 'tenblogs-card', c
 
   // Let layout settle
   await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)))
-  await new Promise(r => setTimeout(r, 120))
+  await new Promise(r => setTimeout(r, 200))
 
   // Inline all images — this makes the FIRST capture always work
   await inlineAllImages(node)
@@ -113,6 +114,13 @@ export async function downloadCardAsPng(elementId, filename = 'tenblogs-card', c
   }
 
   try {
+    // Two silent warm-up renders so the browser fully rasterises background images.
+    // Without this the first real capture may miss the bg on some machines.
+    await toPng(node, { ...opts, cacheBust: false }).catch(() => {})
+    await new Promise(r => requestAnimationFrame(r))
+    await toPng(node, { ...opts, cacheBust: false }).catch(() => {})
+    await new Promise(r => requestAnimationFrame(r))
+
     const dataUrl = await toPng(node, opts)
 
     const a    = document.createElement('a')

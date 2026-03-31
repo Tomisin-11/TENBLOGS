@@ -34,24 +34,17 @@ export default function NewsCard({ d }) {
         TEN BLOGS
       </div>
 
-      {/* News text block — grows upward from bottom, capped so it never exits top half */}
+      {/* News text block */}
       <div style={{
         position: 'absolute',
-        bottom: 140,
-        left: 60,
-        right: 60,
+        bottom: d.subtext ? 180 : 140,
+        left: 60, right: 60,
         zIndex: 3,
-        maxHeight: 'calc(100% - 300px)',
-        overflow: 'hidden',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-end',
       }}>
         {/* Category tag */}
         {d.category && (
           <div style={{
             display: 'inline-block',
-            alignSelf: 'flex-start',
             background: '#e0000a',
             color: '#fff',
             fontFamily: "'Bebas Neue',sans-serif",
@@ -59,7 +52,6 @@ export default function NewsCard({ d }) {
             letterSpacing: '0.22em',
             padding: '5px 22px',
             marginBottom: 24,
-            flexShrink: 0,
           }}>
             {d.category.toUpperCase()}
           </div>
@@ -74,8 +66,6 @@ export default function NewsCard({ d }) {
           letterSpacing: '0.02em',
           textShadow: '0 2px 40px rgba(0,0,0,0.8)',
           marginBottom: d.subtext ? 28 : 0,
-          wordBreak: 'break-word',
-          overflowWrap: 'break-word',
         }}>
           {d.headline || 'YOUR HEADLINE HERE'}
         </div>
@@ -88,9 +78,6 @@ export default function NewsCard({ d }) {
             color: 'rgba(255,255,255,0.7)',
             letterSpacing: '0.04em',
             lineHeight: 1.3,
-            wordBreak: 'break-word',
-            overflowWrap: 'break-word',
-            flexShrink: 0,
           }}>
             {d.subtext}
           </div>

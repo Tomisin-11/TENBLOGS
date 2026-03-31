@@ -58,55 +58,44 @@ export default function TransferCard({ d, img }) {
         TEN BLOGS
       </div>
 
-      {/* Main text block — anchored to bottom, grows upward */}
+      {/* Badge (BREAKING / TRANSFER etc) */}
       <div style={{
         position: 'absolute',
-        bottom: 140,
+        bottom: 380,
         left: 60,
-        right: 60,
         zIndex: 5,
-        maxHeight: 'calc(100% - 300px)',
-        overflow: 'hidden',
         display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-end',
+        alignItems: 'center',
+        gap: 0,
       }}>
-
-        {/* Badge (BREAKING / TRANSFER etc) */}
         <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 0,
-          marginBottom: 24,
-          flexShrink: 0,
+          background: badgeColor,
+          color: '#fff',
+          fontFamily: "'Bebas Neue',sans-serif",
+          fontSize: 32,
+          letterSpacing: '0.22em',
+          padding: '8px 30px',
         }}>
-          <div style={{
-            background: badgeColor,
-            color: '#fff',
-            fontFamily: "'Bebas Neue',sans-serif",
-            fontSize: 32,
-            letterSpacing: '0.22em',
-            padding: '8px 30px',
-          }}>
-            {badgeType}
-          </div>
-          <div style={{
-            background: 'rgba(255,255,255,0.08)',
-            border: `1px solid ${badgeColor}`,
-            borderLeft: 'none',
-            color: 'rgba(255,255,255,0.55)',
-            fontFamily: "'Barlow Condensed',sans-serif",
-            fontSize: 22,
-            fontWeight: 600,
-            letterSpacing: '0.12em',
-            padding: '9px 22px',
-            textTransform: 'uppercase',
-          }}>
-            {d.badgeSubtext || 'NEWS'}
-          </div>
+          {badgeType}
         </div>
+        <div style={{
+          background: 'rgba(255,255,255,0.08)',
+          border: `1px solid ${badgeColor}`,
+          borderLeft: 'none',
+          color: 'rgba(255,255,255,0.55)',
+          fontFamily: "'Barlow Condensed',sans-serif",
+          fontSize: 22,
+          fontWeight: 600,
+          letterSpacing: '0.12em',
+          padding: '9px 22px',
+          textTransform: 'uppercase',
+        }}>
+          {d.badgeSubtext || 'NEWS'}
+        </div>
+      </div>
 
-        {/* Main headline */}
+      {/* Main text */}
+      <div style={{ position: 'absolute', bottom: 140, left: 60, right: 60, zIndex: 5 }}>
         <div style={{
           fontFamily: "'Bebas Neue',sans-serif",
           fontSize: parseInt(d.mainTextSize) || 100,
@@ -114,9 +103,7 @@ export default function TransferCard({ d, img }) {
           color: '#ffffff',
           letterSpacing: '0.02em',
           textShadow: '0 4px 40px rgba(0,0,0,0.9)',
-          marginBottom: d.sideText ? 24 : 0,
-          wordBreak: 'break-word',
-          overflowWrap: 'break-word',
+          marginBottom: 24,
         }}>
           {d.mainText || 'MAIN NEWS TEXT HERE'}
         </div>
@@ -131,9 +118,6 @@ export default function TransferCard({ d, img }) {
             lineHeight: 1.3,
             borderLeft: `3px solid ${badgeColor}`,
             paddingLeft: 20,
-            wordBreak: 'break-word',
-            overflowWrap: 'break-word',
-            flexShrink: 0,
           }}>
             {d.sideText}
           </div>
