@@ -11,7 +11,7 @@ const FULL_RES_CARDS = ['matchday', 'result', 'news', 'transfer', 'playerstats',
 async function srcToDataUrl(src) {
   if (!src || src.startsWith('data:')) return src
   return new Promise((resolve) => {
-    const img = new Image()
+    const img = new window.Image()
     img.crossOrigin = 'anonymous'
     img.onload = () => {
       const canvas = document.createElement('canvas')

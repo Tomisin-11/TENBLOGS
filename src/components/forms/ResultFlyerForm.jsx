@@ -16,10 +16,10 @@ function BgUpload({ value, onChange }) {
       // Resize + compress large images so html-to-image can decode them
       // instantly at download time (a raw 10MB JPEG → ~13MB base64 causes
       // capture timeouts; resizing to 1920px max at q=0.88 keeps full quality)
-      const img = new Image()
-      img.onload = () => {
+      const bmp = new window.Image()
+      bmp.onload = () => {
         const MAX = 1920
-        let { naturalWidth: w, naturalHeight: h } = img
+        let { naturalWidth: w, naturalHeight: h } = bmp
         if (w > MAX || h > MAX) {
           const ratio = Math.min(MAX / w, MAX / h)
           w = Math.round(w * ratio)
@@ -27,10 +27,10 @@ function BgUpload({ value, onChange }) {
         }
         const canvas = document.createElement('canvas')
         canvas.width = w; canvas.height = h
-        canvas.getContext('2d').drawImage(img, 0, 0, w, h)
+        canvas.getContext('2d').drawImage(bmp, 0, 0, w, h)
         onChange(canvas.toDataURL('image/jpeg', 0.88))
       }
-      img.src = ev.target.result
+      bmp.src = ev.target.result
     }
     r.readAsDataURL(f)
   }
