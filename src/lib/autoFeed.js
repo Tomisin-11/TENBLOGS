@@ -193,10 +193,11 @@ export async function fetchSportsNews(filters = DEFAULT_FILTERS, page = 1) {
 
   const q = buildSearchQuery(filters)
 
-  const endpoint = `https://newsapi.org/v2/everything?` +
+  // NewsAPI free plan only allows /top-headlines from browsers
+  // Use q param to filter by sport/league within headlines
+  const endpoint = `https://newsapi.org/v2/top-headlines?` +
     `q=${encodeURIComponent(q)}&` +
     `language=en&` +
-    `sortBy=publishedAt&` +
     `pageSize=10&` +
     `page=${page}&` +
     `apiKey=${_newsKey}`
