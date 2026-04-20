@@ -1,4 +1,4 @@
-import { LayoutDashboard, Medal, Swords, PieChart, Crosshair, CalendarDays, Trophy, ChevronLeft, ChevronRight, X, Newspaper, Zap, BarChart3 } from 'lucide-react'
+import { LayoutDashboard, Medal, Swords, PieChart, Crosshair, CalendarDays, Trophy, ChevronLeft, ChevronRight, X, Newspaper, Zap, BarChart3, Rss } from 'lucide-react'
 
 const NAV_GROUPS = [
   {
@@ -28,6 +28,12 @@ const NAV_GROUPS = [
       { id:'transfer',    Icon:Zap,        label:'Transfer / Breaking', badge:'NEW' },
       { id:'playerstats', Icon:BarChart3,  label:'Player Stats',        badge:'NEW' },
       { id:'tournament',  Icon:Trophy,     label:'Tournament',          badge:'NEW' },
+    ],
+  },
+  {
+    label: 'AI Tools',
+    items: [
+      { id:'autofeed', Icon:Rss, label:'Auto Feed', badge:'AI' },
     ],
   },
 ]

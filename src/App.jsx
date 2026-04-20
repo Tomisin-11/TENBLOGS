@@ -28,6 +28,7 @@ import PlayerStatsForm   from './components/forms/PlayerStatsForm'
 import TournamentForm    from './components/forms/TournamentForm'
 
 import { downloadCardAsPng } from './lib/download'
+import AutoFeedPage from './pages/AutoFeedPage'
 import {
   DEFAULT_RATING, DEFAULT_H2H, DEFAULT_ANALYTICS,
   DEFAULT_PREDICTION, DEFAULT_MATCHDAY, DEFAULT_RESULT,
@@ -220,8 +221,24 @@ export default function App() {
   const [transImg, setTransImg] = useState(null)
   const [psImg, setPsImg] = useState(null)
 
-  const isCard = active !== 'dashboard'
+  const isCard = active !== 'dashboard' && active !== 'autofeed'
   const previewPanelRef = useRef(null)
+
+  // Load an auto-feed item into the correct Studio card editor
+  const handleLoadIntoStudio = useCallback((item) => {
+    const { cardType, cardData } = item
+    if (cardType === 'news') {
+      setNewsD(cardData)
+      setActive('news')
+    } else if (cardType === 'result') {
+      setResD(cardData)
+      setActive('result')
+    } else if (cardType === 'transfer') {
+      setTransD(cardData)
+      if (cardData.bgImage) setTransImg(cardData.bgImage)
+      setActive('transfer')
+    }
+  }, [])
 
   // The card rendered in the MODAL (not clipped by any overflow)
   const modalCardMap = {
@@ -287,8 +304,15 @@ export default function App() {
 
         <div className="flex-1 overflow-hidden">
 
+          {/* Auto Feed */}
+          {active === 'autofeed' && (
+            <div className="h-full overflow-hidden">
+              <AutoFeedPage onLoadIntoStudio={handleLoadIntoStudio} />
+            </div>
+          )}
+
           {/* Dashboard */}
-          {!isCard && (
+          {active === 'dashboard' && (
             <div className="h-full overflow-y-auto p-4 sm:p-6 lg:p-8">
               <Dashboard goTo={setActive} />
             </div>
