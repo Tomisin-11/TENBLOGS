@@ -1,9 +1,10 @@
 import { SectionLabel, Field } from '../ui/SharedUI'
 import TeamSelect from '../ui/TeamSelect'
-import { COMPETITION_NAMES } from '../../lib/teamLogos'
+import { useCustomAssets } from '../../lib/CustomAssetsContext'
 
 export default function PredictionForm({ d, setD }) {
   const s = k => v => setD(p => ({ ...p, [k]: v }))
+  const { competitionNames } = useCustomAssets()
   const handleHome = ({ name, logo }) => setD(p => ({ ...p, homeTeam: name, homeTeamLogo: logo }))
   const handleAway = ({ name, logo }) => setD(p => ({ ...p, awayTeam: name, awayTeamLogo: logo }))
   return (
@@ -14,7 +15,7 @@ export default function PredictionForm({ d, setD }) {
         <TeamSelect label="Away Team" value={d.awayTeam} onChange={handleAway} colorValue="#ffffff" onColorChange={()=>{}} side="away" /></div>
       <div><SectionLabel>Match</SectionLabel>
         <div className="grid grid-cols-2 gap-2.5">
-          <Field label="Competition" value={d.comp} onChange={s('comp')} options={COMPETITION_NAMES} span2 />
+          <Field label="Competition" value={d.comp} onChange={s('comp')} options={competitionNames} span2 />
           <Field label="Date / Time" value={d.date} onChange={s('date')} span2 />
         </div></div>
       <div><SectionLabel>My Prediction</SectionLabel>

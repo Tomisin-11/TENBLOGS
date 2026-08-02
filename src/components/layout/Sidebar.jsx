@@ -1,4 +1,4 @@
-import { LayoutDashboard, Medal, Swords, PieChart, Crosshair, CalendarDays, Trophy, ChevronLeft, ChevronRight, X, Newspaper, Zap, BarChart3, Rss } from 'lucide-react'
+import { LayoutDashboard, Medal, Swords, PieChart, Crosshair, CalendarDays, Trophy, ChevronLeft, ChevronRight, X, Newspaper, Zap, BarChart3, Rss, ImagePlus } from 'lucide-react'
 
 const NAV_GROUPS = [
   {
@@ -34,6 +34,12 @@ const NAV_GROUPS = [
     label: 'AI Tools',
     items: [
       { id:'autofeed', Icon:Rss, label:'Auto Feed', badge:'AI' },
+    ],
+  },
+  {
+    label: 'Library',
+    items: [
+      { id:'logos', Icon:ImagePlus, label:'Logo Library' },
     ],
   },
 ]

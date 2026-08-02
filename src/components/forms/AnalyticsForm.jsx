@@ -1,9 +1,10 @@
 import { SectionLabel, Field } from '../ui/SharedUI'
 import TeamSelect from '../ui/TeamSelect'
-import { COMPETITION_NAMES } from '../../lib/teamLogos'
+import { useCustomAssets } from '../../lib/CustomAssetsContext'
 
 export default function AnalyticsForm({ d, setD }) {
   const s = k => v => setD(p => ({ ...p, [k]: v }))
+  const { competitionNames } = useCustomAssets()
 
   const handleHomeTeam = ({ name, logo, homeColor }) =>
     setD(p => ({ ...p, homeTeam: name, homeTeamLogo: logo, homeTeamColor: homeColor, homeDisplayName: p.homeDisplayName || '' }))
@@ -36,7 +37,7 @@ export default function AnalyticsForm({ d, setD }) {
           <Field label="Home Score"  value={d.homeScore} onChange={s('homeScore')} />
           <Field label="Away Score"  value={d.awayScore} onChange={s('awayScore')} />
           <Field label="Status" value={d.status} onChange={s('status')} options={['FT','LIVE','HT']} />
-          <Field label="Competition" value={d.comp} onChange={s('comp')} options={COMPETITION_NAMES} />
+          <Field label="Competition" value={d.comp} onChange={s('comp')} options={competitionNames} />
           <Field label="Venue" value={d.venue} onChange={s('venue')} span2 />
         </div>
       </div>

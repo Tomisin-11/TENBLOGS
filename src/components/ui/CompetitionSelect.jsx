@@ -1,11 +1,12 @@
-import { COMPETITION_NAMES, COMPETITIONS } from '../../lib/teamLogos'
+import { useCustomAssets } from '../../lib/CustomAssetsContext'
 
 export default function CompetitionSelect({ label, value, onChange, optional }) {
-  const comp = COMPETITIONS[value]
+  const { competitions, competitionNames } = useCustomAssets()
+  const comp = competitions[value]
 
   const handleSelect = (name) => {
     if (!name) { onChange({ name: '', logo: null }); return }
-    const c = COMPETITIONS[name]
+    const c = competitions[name]
     onChange({ name, logo: c?.logo || null, color: c?.color, bg: c?.bg })
   }
 
@@ -28,7 +29,7 @@ export default function CompetitionSelect({ label, value, onChange, optional }) 
       <select value={value || ''} onChange={e => handleSelect(e.target.value)}
         className="w-full bg-white/[0.04] border border-white/[0.08] hover:border-white/[0.15] text-white/90 text-[13px] px-3 py-2 transition-colors focus:border-[#e0000a]">
         {optional && <option value="" className="bg-[#0d0d16]">— None —</option>}
-        {COMPETITION_NAMES.map(n => (
+        {competitionNames.map(n => (
           <option key={n} value={n} className="bg-[#0d0d16]">{n}</option>
         ))}
       </select>

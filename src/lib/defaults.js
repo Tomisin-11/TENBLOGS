@@ -59,6 +59,7 @@ export const DEFAULT_MATCHDAY = {
   date:'22 Mar 2026', time:'21:00',
   venue:'Etihad Stadium', bgColor:'#001230',
   homePlayer:null, awayPlayer:null,
+  brandTop:'TAVE', brandBottom:'TAVE',
 }
 
 export const DEFAULT_RESULT = {
@@ -74,6 +75,7 @@ export const DEFAULT_RESULT = {
   awayScorers:"30' M. Kerkez",
   bgImage:null,
   bgColor:'#100808',
+  brandTop:'TAVE', brandBottom:'TAVE',
 }
 
 export const DEFAULT_NEWS = {
@@ -86,6 +88,7 @@ export const DEFAULT_NEWS = {
   subtextSize: '36',
   source: 'Sky Sports',
   sourcePos: 'bottom-right',
+  brandTop: 'TAVE', brandBottom: 'TAVE',
 }
 
 export const DEFAULT_TRANSFER = {
@@ -97,6 +100,7 @@ export const DEFAULT_TRANSFER = {
   mainTextSize: '100',
   sideText: 'Fee: £180m. 5-year contract signed.',
   sideTextSize: '34',
+  brandTop: 'TAVE', brandBottom: 'TAVE',
 }
 
 export const DEFAULT_PLAYERSTATS = {
@@ -115,6 +119,7 @@ export const DEFAULT_PLAYERSTATS = {
   touches: '62',
   dribbles: '4',
   keyPasses: '5',
+  brandTop: 'TAVE', brandBottom: 'TAVE',
 }
 
 export const DEFAULT_TOURNAMENT = {
@@ -128,6 +133,7 @@ export const DEFAULT_TOURNAMENT = {
     { teamA: 'Kosovo', teamB: 'Türkiye', label: 'PATH C', winner: '' },
     { teamA: 'Czechia', teamB: 'Denmark', label: 'PATH D', winner: '' },
   ],
+  brandTop: 'TAVE', brandBottom: 'TAVE',
 }
 
 export const DEFAULT_EDITOR = {

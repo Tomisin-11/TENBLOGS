@@ -94,6 +94,13 @@ export default function ResultFlyerForm({ d, setD }) {
         <SectionLabel>Competition (optional)</SectionLabel>
         <CompetitionSelect label="Select Competition" value={d.competition} onChange={handleComp} optional />
       </div>
+      <div>
+        <SectionLabel>Branding</SectionLabel>
+        <div className="grid grid-cols-1 gap-3">
+          <Field label="Top-Left Text" value={d.brandTop || 'TAVE'} onChange={s('brandTop')} />
+          <Field label="Bottom-Center Text" value={d.brandBottom || 'TAVE'} onChange={s('brandBottom')} />
+        </div>
+      </div>
     </div>
   )
 }

@@ -21,7 +21,7 @@ export default function ResultFlyer({ d }) {
 
       <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '70%', background: 'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.55) 30%, rgba(0,0,0,0.92) 100%)', pointerEvents: 'none', zIndex: 1 }} />
 
-      <div style={{ position: 'absolute', top: 28, left: 36, zIndex: 2, fontFamily: "'Bebas Neue',sans-serif", fontSize: 28, letterSpacing: '0.22em', color: 'rgba(255,255,255,0.4)' }}>TEN BLOGS</div>
+      <div style={{ position: 'absolute', top: 28, left: 36, zIndex: 2, fontFamily: "'Bebas Neue',sans-serif", fontSize: 28, letterSpacing: '0.22em', color: 'rgba(255,255,255,0.4)' }}>{d.brandTop || 'TAVE'}</div>
 
       {hasComp && (() => {
         const compLogoSrc = d.competitionLogo || COMPETITIONS[d.competition]?.logo
@@ -104,9 +104,9 @@ export default function ResultFlyer({ d }) {
         </div>
       )}
 
-      {/* Branding */}
+      {/* Bottom-center brand — editable */}
       <div style={{ position: 'absolute', bottom: 22, left: 0, right: 0, zIndex: 10, display: 'flex', justifyContent: 'center', fontFamily: "'Bebas Neue',sans-serif", fontSize: 28, letterSpacing: '0.22em', color: 'rgba(255,255,255,0.3)' }}>
-        T-BLOGS
+        {d.brandBottom || 'TAVE'}
       </div>
     </div>
   )

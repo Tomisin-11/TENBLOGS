@@ -95,9 +95,9 @@ export default function PlayerStatsCard({ d, img }) {
         zIndex: 1,
       }} />
 
-      {/* TEN BLOGS — top left */}
+      {/* Top-left brand — editable */}
       <div style={{ position: 'absolute', top: 36, left: 36, zIndex: 3, fontFamily: "'Bebas Neue',sans-serif", fontSize: 22, letterSpacing: '0.25em', color: 'rgba(255,255,255,0.45)', textTransform: 'uppercase' }}>
-        TEN BLOGS
+        {d.brandTop || 'TAVE'}
       </div>
 
       {/* Player name + club block */}
@@ -196,7 +196,7 @@ export default function PlayerStatsCard({ d, img }) {
         </div>
       )}
 
-      {/* T-BLOGS branding — very bottom */}
+      {/* Bottom-center brand — editable */}
       <div style={{
         position: 'absolute', bottom: 20, left: 0, right: 0, zIndex: 10,
         display: 'flex', justifyContent: 'center',
@@ -204,7 +204,7 @@ export default function PlayerStatsCard({ d, img }) {
         fontSize: 22, letterSpacing: '0.22em',
         color: 'rgba(255,255,255,0.2)',
       }}>
-        T-BLOGS
+        {d.brandBottom || 'TAVE'}
       </div>
     </div>
   )

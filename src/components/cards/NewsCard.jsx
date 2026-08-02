@@ -29,9 +29,9 @@ export default function NewsCard({ d }) {
         zIndex: 1,
       }} />
 
-      {/* TEN BLOGS — top left */}
+      {/* Top-left brand — editable */}
       <div style={{ position: 'absolute', top: 36, left: 36, zIndex: 3, fontFamily: "'Bebas Neue',sans-serif", fontSize: 22, letterSpacing: '0.25em', color: 'rgba(255,255,255,0.45)', textTransform: 'uppercase' }}>
-        TEN BLOGS
+        {d.brandTop || 'TAVE'}
       </div>
 
       {/* News text block */}
@@ -52,6 +52,8 @@ export default function NewsCard({ d }) {
             letterSpacing: '0.22em',
             padding: '5px 22px',
             marginBottom: 24,
+            overflowWrap: 'anywhere',
+            maxWidth: '100%',
           }}>
             {d.category.toUpperCase()}
           </div>
@@ -66,6 +68,8 @@ export default function NewsCard({ d }) {
           letterSpacing: '0.02em',
           textShadow: '0 2px 40px rgba(0,0,0,0.8)',
           marginBottom: d.subtext ? 28 : 0,
+          overflowWrap: 'anywhere',
+          wordBreak: 'break-word',
         }}>
           {d.headline || 'YOUR HEADLINE HERE'}
         </div>
@@ -78,6 +82,8 @@ export default function NewsCard({ d }) {
             color: 'rgba(255,255,255,0.7)',
             letterSpacing: '0.04em',
             lineHeight: 1.3,
+            overflowWrap: 'anywhere',
+            wordBreak: 'break-word',
           }}>
             {d.subtext}
           </div>
@@ -102,7 +108,7 @@ export default function NewsCard({ d }) {
         </div>
       )}
 
-      {/* T-BLOGS branding bottom center */}
+      {/* Bottom-center brand — editable */}
       <div style={{
         position: 'absolute', bottom: 28, left: 0, right: 0, zIndex: 10,
         display: 'flex', justifyContent: 'center',
@@ -110,7 +116,7 @@ export default function NewsCard({ d }) {
         fontSize: 26, letterSpacing: '0.22em',
         color: 'rgba(255,255,255,0.25)',
       }}>
-        T-BLOGS
+        {d.brandBottom || 'TAVE'}
       </div>
     </div>
   )

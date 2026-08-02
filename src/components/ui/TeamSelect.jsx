@@ -1,14 +1,18 @@
-import { CLUB_NAMES, COUNTRY_NAMES, TEAMS } from '../../lib/teamLogos'
+import { useCustomAssets } from '../../lib/CustomAssetsContext'
 
 /**
  * TeamSelect — shows clubs and national teams in separate optgroups.
- * Logos are local SVGs — no async fetching needed.
+ * Pulls from the merged (built-in + user-added via Logo Library) team list.
  */
 export default function TeamSelect({ label, value, onChange, colorValue, onColorChange, side = 'home' }) {
-  const team = TEAMS[value]
+  const { teams, teamNames } = useCustomAssets()
+  const team = teams[value]
+
+  const countryNames = teamNames.filter(n => teams[n].type === 'country' || teams[n].logo?.includes('/logos/flags/'))
+  const clubNames = teamNames.filter(n => !countryNames.includes(n))
 
   const handleSelect = (name) => {
-    const t = TEAMS[name]
+    const t = teams[name]
     onChange({
       name,
       logo: t?.logo || null,
@@ -36,12 +40,12 @@ export default function TeamSelect({ label, value, onChange, colorValue, onColor
       <select value={value} onChange={e => handleSelect(e.target.value)}
         className="w-full bg-white/[0.04] border border-white/[0.08] hover:border-white/[0.15] text-white/90 text-[13px] px-3 py-2 transition-colors focus:border-[#e0000a]">
         <optgroup label="⚽  Clubs" style={{ background:'#0d0d16', color:'rgba(255,255,255,0.45)', fontWeight:700 }}>
-          {CLUB_NAMES.map(n => (
+          {clubNames.map(n => (
             <option key={n} value={n} className="bg-[#0d0d16]">{n}</option>
           ))}
         </optgroup>
         <optgroup label="🌍  Countries" style={{ background:'#0d0d16', color:'rgba(255,255,255,0.45)', fontWeight:700 }}>
-          {COUNTRY_NAMES.map(n => (
+          {countryNames.map(n => (
             <option key={n} value={n} className="bg-[#0d0d16]">{n}</option>
           ))}
         </optgroup>

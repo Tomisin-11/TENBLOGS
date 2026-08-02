@@ -24,6 +24,11 @@ export default function MatchdayFlyer({ d }) {
       <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 420, background: 'linear-gradient(180deg,rgba(0,0,0,0.55) 0%,transparent 100%)', pointerEvents: 'none' }} />
       <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 520, background: 'linear-gradient(0deg,rgba(0,0,0,0.9) 0%,transparent 100%)', pointerEvents: 'none' }} />
 
+      {/* Top-left brand — editable */}
+      <div style={{ position: 'absolute', top: 36, left: 36, zIndex: 5, fontFamily: "'Bebas Neue',sans-serif", fontSize: 22, letterSpacing: '0.25em', color: 'rgba(255,255,255,0.45)', textTransform: 'uppercase' }}>
+        {d.brandTop || 'TAVE'}
+      </div>
+
       {/* Competition logo + name */}
       {(d.competition || d.competitionLogo) && (
         <div style={{ position: 'absolute', top: 36, left: 0, right: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
@@ -116,9 +121,9 @@ export default function MatchdayFlyer({ d }) {
         </div>
       </div>
 
-      {/* Branding */}
+      {/* Bottom-center brand — editable */}
       <div style={{ position: 'absolute', bottom: 22, left: 0, right: 0, zIndex: 10, display: 'flex', justifyContent: 'center', fontFamily: "'Bebas Neue',sans-serif", fontSize: 28, letterSpacing: '0.22em', color: 'rgba(255,255,255,0.3)' }}>
-        T-BLOGS
+        {d.brandBottom || 'TAVE'}
       </div>
     </div>
   )

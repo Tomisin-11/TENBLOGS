@@ -98,9 +98,9 @@ export default function TournamentCard({ d }) {
         zIndex: 0,
       }} />
 
-      {/* TEN BLOGS — top left */}
+      {/* Top-left brand — editable */}
       <div style={{ position: 'absolute', top: 36, left: 50, zIndex: 3, fontFamily: "'Bebas Neue',sans-serif", fontSize: 22, letterSpacing: '0.25em', color: 'rgba(255,255,255,0.45)', textTransform: 'uppercase' }}>
-        TEN BLOGS
+        {d.brandTop || 'TAVE'}
       </div>
 
       {/* Tournament name */}
@@ -168,7 +168,7 @@ export default function TournamentCard({ d }) {
         )}
       </div>
 
-      {/* T-BLOGS branding */}
+      {/* Bottom-center brand — editable */}
       <div style={{
         position: 'absolute', bottom: 24, left: 0, right: 0, zIndex: 10,
         display: 'flex', justifyContent: 'center',
@@ -176,7 +176,7 @@ export default function TournamentCard({ d }) {
         fontSize: 26, letterSpacing: '0.22em',
         color: 'rgba(255,255,255,0.22)',
       }}>
-        T-BLOGS
+        {d.brandBottom || 'TAVE'}
       </div>
     </div>
   )

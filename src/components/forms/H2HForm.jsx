@@ -1,9 +1,10 @@
 import { SectionLabel, Field } from '../ui/SharedUI'
 import TeamSelect from '../ui/TeamSelect'
-import { COMPETITION_NAMES } from '../../lib/teamLogos'
+import { useCustomAssets } from '../../lib/CustomAssetsContext'
 
 export default function H2HForm({ d, setD }) {
   const s = k => v => setD(p => ({ ...p, [k]: v }))
+  const { competitionNames } = useCustomAssets()
 
   const handleHomeTeam = ({ name, logo, homeColor }) => {
     setD(p => ({ ...p, homeTeam: name, homeTeamLogo: logo, homeTeamColor: homeColor,
@@ -37,7 +38,7 @@ export default function H2HForm({ d, setD }) {
       <div>
         <SectionLabel>Match Info</SectionLabel>
         <div className="grid grid-cols-2 gap-2.5">
-          <Field label="Competition" value={d.comp} onChange={s('comp')} options={COMPETITION_NAMES} span2 />
+          <Field label="Competition" value={d.comp} onChange={s('comp')} options={competitionNames} span2 />
           <Field label="Date" value={d.date} onChange={s('date')} span2 />
         </div>
       </div>

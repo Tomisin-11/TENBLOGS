@@ -10,7 +10,7 @@ export default function TransferCard({ d, img }) {
     EXCLUSIVE: '#9b5de5',
   }
   const badgeType = d.badgeType || 'BREAKING'
-  const badgeColor = typeColors[badgeType] || '#e0000a'
+  const badgeColor = typeColors[badgeType?.toUpperCase()] || '#e0000a'
 
   return (
     <div
@@ -53,49 +53,51 @@ export default function TransferCard({ d, img }) {
         </div>
       )}
 
-      {/* TEN BLOGS — top left */}
+      {/* Top-left brand — editable */}
       <div style={{ position: 'absolute', top: 36, left: 36, zIndex: 5, fontFamily: "'Bebas Neue',sans-serif", fontSize: 22, letterSpacing: '0.25em', color: 'rgba(255,255,255,0.45)', textTransform: 'uppercase' }}>
-        TEN BLOGS
+        {d.brandTop || 'TAVE'}
       </div>
 
-      {/* Badge (BREAKING / TRANSFER etc) */}
+      {/* Breaking-news content block — badge, headline, and detail text
+          stack together in one flow so the whole group grows upward as
+          text is added instead of the badge getting overlapped. */}
       <div style={{
-        position: 'absolute',
-        bottom: 380,
-        left: 60,
-        zIndex: 5,
-        display: 'flex',
-        alignItems: 'center',
-        gap: 0,
+        position: 'absolute', bottom: 140, left: 60, right: 60, zIndex: 5,
+        display: 'flex', flexDirection: 'column', gap: 22,
       }}>
-        <div style={{
-          background: badgeColor,
-          color: '#fff',
-          fontFamily: "'Bebas Neue',sans-serif",
-          fontSize: 32,
-          letterSpacing: '0.22em',
-          padding: '8px 30px',
-        }}>
-          {badgeType}
+        {/* Badge (BREAKING / TRANSFER / custom text) */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 0, flexWrap: 'wrap', rowGap: 8 }}>
+          <div style={{
+            background: badgeColor,
+            color: '#fff',
+            fontFamily: "'Bebas Neue',sans-serif",
+            fontSize: 32,
+            letterSpacing: '0.22em',
+            padding: '8px 30px',
+            textTransform: 'uppercase',
+            overflowWrap: 'anywhere',
+            maxWidth: '100%',
+          }}>
+            {badgeType}
+          </div>
+          <div style={{
+            background: 'rgba(255,255,255,0.08)',
+            border: `1px solid ${badgeColor}`,
+            borderLeft: 'none',
+            color: 'rgba(255,255,255,0.55)',
+            fontFamily: "'Barlow Condensed',sans-serif",
+            fontSize: 22,
+            fontWeight: 600,
+            letterSpacing: '0.12em',
+            padding: '9px 22px',
+            textTransform: 'uppercase',
+            whiteSpace: 'nowrap',
+          }}>
+            {d.badgeSubtext || 'NEWS'}
+          </div>
         </div>
-        <div style={{
-          background: 'rgba(255,255,255,0.08)',
-          border: `1px solid ${badgeColor}`,
-          borderLeft: 'none',
-          color: 'rgba(255,255,255,0.55)',
-          fontFamily: "'Barlow Condensed',sans-serif",
-          fontSize: 22,
-          fontWeight: 600,
-          letterSpacing: '0.12em',
-          padding: '9px 22px',
-          textTransform: 'uppercase',
-        }}>
-          {d.badgeSubtext || 'NEWS'}
-        </div>
-      </div>
 
-      {/* Main text */}
-      <div style={{ position: 'absolute', bottom: 140, left: 60, right: 60, zIndex: 5 }}>
+        {/* Main text */}
         <div style={{
           fontFamily: "'Bebas Neue',sans-serif",
           fontSize: parseInt(d.mainTextSize) || 100,
@@ -103,7 +105,8 @@ export default function TransferCard({ d, img }) {
           color: '#ffffff',
           letterSpacing: '0.02em',
           textShadow: '0 4px 40px rgba(0,0,0,0.9)',
-          marginBottom: 24,
+          overflowWrap: 'anywhere',
+          wordBreak: 'break-word',
         }}>
           {d.mainText || 'MAIN NEWS TEXT HERE'}
         </div>
@@ -118,13 +121,15 @@ export default function TransferCard({ d, img }) {
             lineHeight: 1.3,
             borderLeft: `3px solid ${badgeColor}`,
             paddingLeft: 20,
+            overflowWrap: 'anywhere',
+            wordBreak: 'break-word',
           }}>
             {d.sideText}
           </div>
         )}
       </div>
 
-      {/* T-BLOGS branding */}
+      {/* Bottom-center brand — editable */}
       <div style={{
         position: 'absolute', bottom: 28, left: 0, right: 0, zIndex: 10,
         display: 'flex', justifyContent: 'center',
@@ -132,7 +137,7 @@ export default function TransferCard({ d, img }) {
         fontSize: 26, letterSpacing: '0.22em',
         color: 'rgba(255,255,255,0.25)',
       }}>
-        T-BLOGS
+        {d.brandBottom || 'TAVE'}
       </div>
     </div>
   )

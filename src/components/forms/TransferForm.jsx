@@ -59,23 +59,25 @@ export default function TransferForm({ d, setD, img, setImg }) {
 
       <SectionLabel>Badge</SectionLabel>
       <div className="grid grid-cols-1 gap-3">
-        <div>
-          <label className="block text-[9px] font-bold tracking-[0.2em] uppercase text-white/30 mb-1.5">Badge Type</label>
-          <div className="flex flex-wrap gap-2">
-            {BADGE_TYPES.map(type => (
-              <button
-                key={type}
-                onClick={() => set('badgeType', type)}
-                className={`px-3 py-1.5 text-[10px] font-bold tracking-[0.15em] uppercase border transition-all ${
-                  (d.badgeType || 'BREAKING') === type
-                    ? 'border-[#e0000a] bg-[#e0000a]/20 text-white'
-                    : 'border-white/10 bg-white/[0.03] text-white/40 hover:border-white/25'
-                }`}
-              >
-                {type}
-              </button>
-            ))}
-          </div>
+        <Field
+          label="Badge Type (type anything, or pick a preset below)"
+          value={d.badgeType || 'BREAKING'}
+          onChange={v => set('badgeType', v)}
+        />
+        <div className="flex flex-wrap gap-2">
+          {BADGE_TYPES.map(type => (
+            <button
+              key={type}
+              onClick={() => set('badgeType', type)}
+              className={`px-3 py-1.5 text-[10px] font-bold tracking-[0.15em] uppercase border transition-all ${
+                (d.badgeType || 'BREAKING') === type
+                  ? 'border-[#e0000a] bg-[#e0000a]/20 text-white'
+                  : 'border-white/10 bg-white/[0.03] text-white/40 hover:border-white/25'
+              }`}
+            >
+              {type}
+            </button>
+          ))}
         </div>
         <Field label="Badge Subtext (e.g. NEWS, DONE DEAL)" value={d.badgeSubtext || 'NEWS'} onChange={v => set('badgeSubtext', v)} />
       </div>
@@ -104,6 +106,12 @@ export default function TransferForm({ d, setD, img, setImg }) {
           />
         </div>
         <Field label="Side Text Font Size (px)" value={d.sideTextSize || '34'} onChange={v => set('sideTextSize', v)} />
+      </div>
+
+      <SectionLabel>Branding</SectionLabel>
+      <div className="grid grid-cols-1 gap-3">
+        <Field label="Top-Left Text" value={d.brandTop || 'TAVE'} onChange={v => set('brandTop', v)} />
+        <Field label="Bottom-Center Text" value={d.brandBottom || 'TAVE'} onChange={v => set('brandBottom', v)} />
       </div>
     </div>
   )

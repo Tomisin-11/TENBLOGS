@@ -29,6 +29,8 @@ import TournamentForm    from './components/forms/TournamentForm'
 
 import { downloadCardAsPng } from './lib/download'
 import AutoFeedPage from './pages/AutoFeedPage'
+import LogosPage from './pages/LogosPage'
+import { CustomAssetsProvider } from './lib/CustomAssetsContext'
 import {
   DEFAULT_RATING, DEFAULT_H2H, DEFAULT_ANALYTICS,
   DEFAULT_PREDICTION, DEFAULT_MATCHDAY, DEFAULT_RESULT,
@@ -221,7 +223,7 @@ export default function App() {
   const [transImg, setTransImg] = useState(null)
   const [psImg, setPsImg] = useState(null)
 
-  const isCard = active !== 'dashboard' && active !== 'autofeed'
+  const isCard = active !== 'dashboard' && active !== 'autofeed' && active !== 'logos'
   const previewPanelRef = useRef(null)
 
   // Load an auto-feed item into the correct Studio card editor
@@ -284,6 +286,7 @@ export default function App() {
   const meta = DL_META[active]
 
   return (
+    <CustomAssetsProvider>
     <div className="flex h-screen overflow-hidden"
       style={{ background:'#050508', fontFamily:"'Barlow Condensed',sans-serif", color:'#f0f0f8' }}>
 
@@ -308,6 +311,13 @@ export default function App() {
           {active === 'autofeed' && (
             <div className="h-full overflow-hidden">
               <AutoFeedPage onLoadIntoStudio={handleLoadIntoStudio} />
+            </div>
+          )}
+
+          {/* Logo Library */}
+          {active === 'logos' && (
+            <div className="h-full overflow-y-auto p-4 sm:p-6 lg:p-8">
+              <LogosPage />
             </div>
           )}
 
@@ -362,5 +372,6 @@ export default function App() {
       )}
 
     </div>
+    </CustomAssetsProvider>
   )
 }
