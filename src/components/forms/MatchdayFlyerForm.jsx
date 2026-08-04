@@ -53,8 +53,8 @@ export default function MatchdayFlyerForm({ d, setD }) {
         <ColorField label="Poster Background" value={d.bgColor||'#001230'} onChange={s('bgColor')}/></div>
       <div><SectionLabel>Branding</SectionLabel>
         <div className="grid grid-cols-1 gap-3">
-          <Field label="Top-Left Text" value={d.brandTop || 'TAVE'} onChange={s('brandTop')} />
-          <Field label="Bottom-Center Text" value={d.brandBottom || 'TAVE'} onChange={s('brandBottom')} />
+          <Field label="Top-Left Text" value={d.brandTop ?? 'TAVE'} onChange={s('brandTop')} />
+          <Field label="Bottom-Center Text" value={d.brandBottom ?? 'TAVE'} onChange={s('brandBottom')} />
         </div></div>
     </div>
   )

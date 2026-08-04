@@ -100,8 +100,8 @@ export default function TournamentForm({ d, setD }) {
       <div>
         <SectionLabel>Branding</SectionLabel>
         <div className="grid grid-cols-1 gap-3">
-          <Field label="Top-Left Text" value={d.brandTop || 'TAVE'} onChange={v => set('brandTop', v)} />
-          <Field label="Bottom-Center Text" value={d.brandBottom || 'TAVE'} onChange={v => set('brandBottom', v)} />
+          <Field label="Top-Left Text" value={d.brandTop ?? 'TAVE'} onChange={v => set('brandTop', v)} />
+          <Field label="Bottom-Center Text" value={d.brandBottom ?? 'TAVE'} onChange={v => set('brandBottom', v)} />
         </div>
       </div>
     </div>

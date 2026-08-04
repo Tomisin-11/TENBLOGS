@@ -48,7 +48,7 @@ export default function NewsCard({ d }) {
             background: '#e0000a',
             color: '#fff',
             fontFamily: "'Bebas Neue',sans-serif",
-            fontSize: 22,
+            fontSize: parseInt(d.categorySize) || 22,
             letterSpacing: '0.22em',
             padding: '5px 22px',
             marginBottom: 24,

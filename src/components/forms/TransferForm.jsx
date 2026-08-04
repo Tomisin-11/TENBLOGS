@@ -61,7 +61,7 @@ export default function TransferForm({ d, setD, img, setImg }) {
       <div className="grid grid-cols-1 gap-3">
         <Field
           label="Badge Type (type anything, or pick a preset below)"
-          value={d.badgeType || 'BREAKING'}
+          value={d.badgeType ?? 'BREAKING'}
           onChange={v => set('badgeType', v)}
         />
         <div className="flex flex-wrap gap-2">
@@ -80,6 +80,14 @@ export default function TransferForm({ d, setD, img, setImg }) {
           ))}
         </div>
         <Field label="Badge Subtext (e.g. NEWS, DONE DEAL)" value={d.badgeSubtext || 'NEWS'} onChange={v => set('badgeSubtext', v)} />
+        <div className="grid grid-cols-2 gap-3">
+          <ColorField label="Badge Background" value={d.badgeColor || '#FFD600'} onChange={v => set('badgeColor', v)} />
+          <ColorField label="Badge Text Color" value={d.badgeTextColor || '#0A0A0A'} onChange={v => set('badgeTextColor', v)} />
+        </div>
+        <div className="grid grid-cols-2 gap-3">
+          <Field label="Badge Font Size (px)" value={d.badgeFontSize ?? '32'} onChange={v => set('badgeFontSize', v)} />
+          <Field label="Subtext Font Size (px)" value={d.badgeSubtextFontSize ?? '22'} onChange={v => set('badgeSubtextFontSize', v)} />
+        </div>
       </div>
 
       <SectionLabel>Text Content</SectionLabel>
@@ -94,7 +102,7 @@ export default function TransferForm({ d, setD, img, setImg }) {
             placeholder="E.g. BELLINGHAM TO REAL MADRID"
           />
         </div>
-        <Field label="Main Text Font Size (px)" value={d.mainTextSize || '100'} onChange={v => set('mainTextSize', v)} />
+        <Field label="Main Text Font Size (px)" value={d.mainTextSize ?? '100'} onChange={v => set('mainTextSize', v)} />
         <div>
           <label className="block text-[9px] font-bold tracking-[0.2em] uppercase text-white/30 mb-1.5">Side / Detail Text</label>
           <textarea
@@ -105,13 +113,13 @@ export default function TransferForm({ d, setD, img, setImg }) {
             placeholder="E.g. Fee: £180m. 5-year contract."
           />
         </div>
-        <Field label="Side Text Font Size (px)" value={d.sideTextSize || '34'} onChange={v => set('sideTextSize', v)} />
+        <Field label="Side Text Font Size (px)" value={d.sideTextSize ?? '34'} onChange={v => set('sideTextSize', v)} />
       </div>
 
       <SectionLabel>Branding</SectionLabel>
       <div className="grid grid-cols-1 gap-3">
-        <Field label="Top-Left Text" value={d.brandTop || 'TAVE'} onChange={v => set('brandTop', v)} />
-        <Field label="Bottom-Center Text" value={d.brandBottom || 'TAVE'} onChange={v => set('brandBottom', v)} />
+        <Field label="Top-Left Text" value={d.brandTop ?? 'TAVE'} onChange={v => set('brandTop', v)} />
+        <Field label="Bottom-Center Text" value={d.brandBottom ?? 'TAVE'} onChange={v => set('brandBottom', v)} />
       </div>
     </div>
   )

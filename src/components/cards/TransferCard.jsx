@@ -2,15 +2,9 @@
 export default function TransferCard({ d, img }) {
   const hasBg = !!d.bgImage
 
-  const typeColors = {
-    TRANSFER: '#00b4d8',
-    BREAKING: '#e0000a',
-    RUMOUR: '#f4a800',
-    CONFIRMED: '#00c851',
-    EXCLUSIVE: '#9b5de5',
-  }
   const badgeType = d.badgeType || 'BREAKING'
-  const badgeColor = typeColors[badgeType?.toUpperCase()] || '#e0000a'
+  const badgeColor = d.badgeColor || '#FFD600'
+  const badgeTextColor = d.badgeTextColor || '#0A0A0A'
 
   return (
     <div
@@ -69,9 +63,9 @@ export default function TransferCard({ d, img }) {
         <div style={{ display: 'flex', alignItems: 'center', gap: 0, flexWrap: 'wrap', rowGap: 8 }}>
           <div style={{
             background: badgeColor,
-            color: '#fff',
+            color: badgeTextColor,
             fontFamily: "'Bebas Neue',sans-serif",
-            fontSize: 32,
+            fontSize: parseInt(d.badgeFontSize) || 32,
             letterSpacing: '0.22em',
             padding: '8px 30px',
             textTransform: 'uppercase',
@@ -86,7 +80,7 @@ export default function TransferCard({ d, img }) {
             borderLeft: 'none',
             color: 'rgba(255,255,255,0.55)',
             fontFamily: "'Barlow Condensed',sans-serif",
-            fontSize: 22,
+            fontSize: parseInt(d.badgeSubtextFontSize) || 22,
             fontWeight: 600,
             letterSpacing: '0.12em',
             padding: '9px 22px',

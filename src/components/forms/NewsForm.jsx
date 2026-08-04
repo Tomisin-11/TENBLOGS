@@ -39,6 +39,7 @@ export default function NewsForm({ d, setD, img, setImg }) {
       <SectionLabel>Content</SectionLabel>
       <div className="grid grid-cols-1 gap-3">
         <Field label="Category Tag (e.g. TRANSFER, LATEST)" value={d.category || ''} onChange={v => set('category', v)} />
+        <Field label="Category Tag Font Size (px)" value={d.categorySize ?? '22'} onChange={v => set('categorySize', v)} />
         <div>
           <label className="block text-[9px] font-bold tracking-[0.2em] uppercase text-white/30 mb-1.5">Headline</label>
           <textarea
@@ -48,7 +49,7 @@ export default function NewsForm({ d, setD, img, setImg }) {
             className="w-full bg-white/[0.04] border border-white/[0.08] hover:border-white/[0.15] text-white/90 text-[13px] px-3 py-2 transition-colors focus:border-[#e0000a] focus:bg-[#e0000a]/5 resize-none"
           />
         </div>
-        <Field label="Headline Font Size (px)" value={d.headlineSize || '96'} onChange={v => set('headlineSize', v)} />
+        <Field label="Headline Font Size (px)" value={d.headlineSize ?? '96'} onChange={v => set('headlineSize', v)} />
         <div>
           <label className="block text-[9px] font-bold tracking-[0.2em] uppercase text-white/30 mb-1.5">Subtext (optional)</label>
           <textarea
@@ -58,7 +59,7 @@ export default function NewsForm({ d, setD, img, setImg }) {
             className="w-full bg-white/[0.04] border border-white/[0.08] hover:border-white/[0.15] text-white/90 text-[13px] px-3 py-2 transition-colors focus:border-[#e0000a] focus:bg-[#e0000a]/5 resize-none"
           />
         </div>
-        <Field label="Subtext Font Size (px)" value={d.subtextSize || '36'} onChange={v => set('subtextSize', v)} />
+        <Field label="Subtext Font Size (px)" value={d.subtextSize ?? '36'} onChange={v => set('subtextSize', v)} />
       </div>
 
       <SectionLabel>Source Reference</SectionLabel>
@@ -74,8 +75,8 @@ export default function NewsForm({ d, setD, img, setImg }) {
 
       <SectionLabel>Branding</SectionLabel>
       <div className="grid grid-cols-1 gap-3">
-        <Field label="Top-Left Text" value={d.brandTop || 'TAVE'} onChange={v => set('brandTop', v)} />
-        <Field label="Bottom-Center Text" value={d.brandBottom || 'TAVE'} onChange={v => set('brandBottom', v)} />
+        <Field label="Top-Left Text" value={d.brandTop ?? 'TAVE'} onChange={v => set('brandTop', v)} />
+        <Field label="Bottom-Center Text" value={d.brandBottom ?? 'TAVE'} onChange={v => set('brandBottom', v)} />
       </div>
     </div>
   )

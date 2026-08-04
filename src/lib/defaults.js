@@ -96,6 +96,8 @@ export const DEFAULT_TRANSFER = {
   bgColor: '#060612',
   badgeType: 'BREAKING',
   badgeSubtext: 'NEWS',
+  badgeColor: '#FFD600',
+  badgeTextColor: '#0A0A0A',
   mainText: 'BELLINGHAM\nTO REAL MADRID',
   mainTextSize: '100',
   sideText: 'Fee: £180m. 5-year contract signed.',
